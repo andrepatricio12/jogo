@@ -55,6 +55,7 @@
     let firstCard = null;
     let secondCard = null;
     let matchedPairs = 0;
+    let movements = 0; // Contador de movimentos
 
     function handleClick(event) {
         const card = event.target;
@@ -64,6 +65,7 @@
 
         card.textContent = card.getAttribute("data-symbol");
         card.classList.add("revealed");
+        movements++; // Incrementa o contador de movimentos
 
         if (!firstCard) {
             firstCard = card;
@@ -79,7 +81,7 @@
             resetSelection();
 
             if (matchedPairs === symbols.length) {
-                message.textContent = "Parabéns! Você encontrou todos os pares!";
+                message.textContent = `Parabéns! Você encontrou todos os pares em ${movements} movimentos!`;
             }
         } else {
             setTimeout(() => {
