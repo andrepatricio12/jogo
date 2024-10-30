@@ -65,7 +65,7 @@
 
 <h1>Bem vindo ao meu portal de jogos!</h1>
 <p id="message">Aqui eu coloco uns joguinhos que estou aprendendo a programar, o jogo é atualizado a cada acesso. Divirta-se!</p>
-<p class="loading">Aguarde, seu jogo será carregado em <span id="countdown">10</span> segundos...</p>
+<p id="countdown" class="loading">Aguarde, seu jogo será carregado em <span id="timer">10</span> segundos...</p>
 
 <script>
     const games = [
@@ -84,18 +84,19 @@
 
     // Redireciona para um jogo aleatório após 10 segundos
     window.onload = function() {
-        let countdown = 10;
-        const countdownElement = document.getElementById("countdown");
+        let timeLeft = 10; // 10 segundos
+        const timerElement = document.getElementById("timer");
 
-        const interval = setInterval(function() {
-            countdown--;
-            countdownElement.textContent = countdown;
-            if (countdown <= 0) {
-                clearInterval(interval);
+        const countdownInterval = setInterval(() => {
+            timerElement.textContent = timeLeft;
+            timeLeft--;
+
+            if (timeLeft < 0) {
+                clearInterval(countdownInterval);
                 const randomGame = getRandomGame();
-                window.location.href = randomGame;
+                window.location.href = randomGame; // Redireciona para o jogo
             }
-        }, 1000); // Atualiza a contagem regressiva a cada 1 segundo
+        }, 1000); // Atualiza a cada segundo
     }
 </script>
 
