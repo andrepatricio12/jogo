@@ -3,121 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evite os Obstáculos</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
-        #gameArea {
-            position: relative;
-            width: 300px;
-            height: 500px;
-            background-color: #e0e0e0;
-            overflow: hidden;
-            border: 2px solid #333;
-        }
-        .player {
-            position: absolute;
-            bottom: 10px;
-            left: 135px;
-            width: 30px;
-            height: 30px;
-            background-color: #3498db;
-        }
-        .obstacle {
-            position: absolute;
-            width: 40px;
-            height: 40px;
-            background-color: #e74c3c;
-        }
-        #score {
-            font-size: 1.2em;
-            margin-top: 20px;
-        }
-    </style>
+    <title>Jogos Aleatórios</title>
 </head>
 <body>
 
-<h2>Evite os Obstáculos</h2>
-<div id="gameArea">
-    <div class="player" id="player"></div>
-</div>
-<p id="score">Pontuação: 0</p>
+<h1>Bem-vindo ao Portal de Jogos!</h1>
+<p>Carregando um jogo aleatório...</p>
+
+<iframe id="gameFrame" width="100%" height="500px" style="border:none;"></iframe>
 
 <script>
-    const gameArea = document.getElementById("gameArea");
-    const player = document.getElementById("player");
-    const scoreDisplay = document.getElementById("score");
-    let score = 0;
-    let gameInterval;
-    let obstacleSpeed = 2;
+    // Lista dos jogos HTML salvos
+    const games = [
+        "cacaaotesouro.html",
+        "jogodavelha.html",
+        "obstacle.html",
+        "jogodamemoria.html"
+    ];
 
-    // Movimento do jogador
-    document.addEventListener("keydown", (event) => {
-        const left = parseInt(window.getComputedStyle(player).getPropertyValue("left"));
-        if (event.key === "ArrowLeft" && left > 0) {
-            player.style.left = left - 20 + "px";
-        } else if (event.key === "ArrowRight" && left < 260) {
-            player.style.left = left + 20 + "px";
-        }
-    });
+    // Seleciona um jogo aleatório da lista
+    const randomGame = games[Math.floor(Math.random() * games.length)];
 
-    // Função para criar obstáculos
-    function createObstacle() {
-        const obstacle = document.createElement("div");
-        obstacle.classList.add("obstacle");
-        obstacle.style.left = Math.floor(Math.random() * 260) + "px";
-        obstacle.style.top = "0px";
-        gameArea.appendChild(obstacle);
-
-        // Movimenta o obstáculo para baixo
-        function moveObstacle() {
-            const obstacleTop = parseInt(window.getComputedStyle(obstacle).getPropertyValue("top"));
-            obstacle.style.top = obstacleTop + obstacleSpeed + "px";
-
-            // Verifica colisão com o jogador
-            const playerLeft = parseInt(window.getComputedStyle(player).getPropertyValue("left"));
-            const playerTop = parseInt(window.getComputedStyle(player).getPropertyValue("top"));
-            const obstacleLeft = parseInt(obstacle.style.left);
-
-            if (
-                obstacleTop > 460 &&
-                obstacleTop < 500 &&
-                obstacleLeft > playerLeft - 30 &&
-                obstacleLeft < playerLeft + 30
-            ) {
-                alert("Game Over! Sua pontuação final é: " + score);
-                clearInterval(gameInterval);
-                location.reload();
-            }
-
-            // Remove o obstáculo se sair da tela e aumenta a pontuação
-            if (obstacleTop > 500) {
-                obstacle.remove();
-                score++;
-                scoreDisplay.textContent = "Pontuação: " + score;
-
-                // Aumenta a velocidade dos obstáculos a cada 5 pontos
-                if (score % 5 === 0) obstacleSpeed++;
-            }
-        }
-
-        // Intervalo de movimento do obstáculo
-        const obstacleInterval = setInterval(() => {
-            if (document.body.contains(obstacle)) moveObstacle();
-            else clearInterval(obstacleInterval);
-        }, 20);
-    }
-
-    // Intervalo principal do jogo
-    gameInterval = setInterval(createObstacle, 1500);
+    // Carrega o jogo escolhido no iframe
+    document.getElementById("gameFrame").src = randomGame;
 </script>
 
 </body>
 </html>
+
