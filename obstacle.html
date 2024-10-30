@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Evite os Obstáculos - Mobile</title>
+    <title>Evite os Obstáculos - Adaptado para PC e Mobile</title>
     <style>
         body {
             display: flex;
@@ -60,26 +60,42 @@
     let obstacleSpeed = 2;
     let isGameOver = false;
     const touchAreaLeft = window.innerWidth / 2;
+    
+    // Detecta o tipo de dispositivo
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-    // Detecta toque e move o jogador
-    gameArea.addEventListener("touchstart", (event) => {
-        if (!isGameOver) {
-            const touchX = event.touches[0].clientX;
-            if (touchX < touchAreaLeft) {
-                movePlayer("left");
-            } else {
-                movePlayer("right");
-            }
-        }
-    });
+    // Movimenta o jogador no PC com as setas
+    function movePlayerPC(event) {
+        if (isGameOver) return;
 
-    function movePlayer(direction) {
         const left = parseInt(window.getComputedStyle(player).getPropertyValue("left"));
-        if (direction === "left" && left > 0) {
+
+        if (event.key === "ArrowLeft" && left > 0) {
             player.style.left = left - 20 + "px";
-        } else if (direction === "right" && left < 260) {
+        } else if (event.key === "ArrowRight" && left < 260) {
             player.style.left = left + 20 + "px";
         }
+    }
+
+    // Movimenta o jogador no mobile com toque
+    function movePlayerMobile(event) {
+        if (isGameOver) return;
+
+        const touchX = event.touches[0].clientX;
+        const left = parseInt(window.getComputedStyle(player).getPropertyValue("left"));
+
+        if (touchX < touchAreaLeft && left > 0) {
+            player.style.left = left - 20 + "px";
+        } else if (touchX >= touchAreaLeft && left < 260) {
+            player.style.left = left + 20 + "px";
+        }
+    }
+
+    // Adiciona os event listeners de acordo com o dispositivo
+    if (isMobile) {
+        gameArea.addEventListener("touchstart", movePlayerMobile);
+    } else {
+        document.addEventListener("keydown", movePlayerPC);
     }
 
     // Função para criar obstáculos
