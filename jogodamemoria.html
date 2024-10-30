@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Memória</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            grid-gap: 10px;
+        }
+        .card {
+            width: 100px;
+            height: 100px;
+            background-color: #4CAF50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            color: white;
+            cursor: pointer;
+        }
+        .card.revealed {
+            background-color: #FFFFFF;
+            color: black;
+            cursor: default;
+        }
+        #message {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Jogo da Memória</h2>
+<p>Encontre todos os pares!</p>
+<div class="grid" id="grid"></div>
+<p id="message"></p>
+
+<script>
+    const grid = document.getElementById("grid");
+    const message = document.getElementById("message");
+    const symbols = ["🍎", "🍌", "🍇", "🍒", "🍍", "🍉", "🍋", "🍑"];
+    const cards = [...symbols, ...symbols].sort(() => 0.5 - Math.random());
+    let firstCard = null;
+    let secondCard = null;
+    let matchedPairs = 0;
+
+    function handleClick(event) {
+        const card = event.target;
+
+        // Ignora cliques em cartas já reveladas ou se há duas cartas reveladas
+        if (card.classList.contains("revealed") || secondCard) return;
+
+        card.textContent = card.getAttribute("data-symbol");
+        card.classList.add("revealed");
+
+        if (!firstCard) {
+            firstCard = card;
+        } else {
+            secondCard = card;
+            checkForMatch();
+        }
+    }
+
+    function checkForMatch() {
+        if (firstCard.getAttribute("data-symbol") === secondCard.getAttribute("data-symbol")) {
+            matchedPairs++;
+            resetSelection();
+
+            if (matchedPairs === symbols.length) {
+                message.textContent = "Parabéns! Você encontrou todos os pares!";
+            }
+        } else {
+            setTimeout(() => {
+                firstCard.textContent = "";
+                secondCard.textContent = "";
+                firstCard.classList.remove("revealed");
+                secondCard.classList.remove("revealed");
+                resetSelection();
+            }, 1000);
+        }
+    }
+
+    function resetSelection() {
+        firstCard = null;
+        secondCard = null;
+    }
+
+    // Cria as cartas na grade
+    cards.forEach(symbol => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        card.setAttribute("data-symbol", symbol);
+        card.addEventListener("click", handleClick);
+        grid.appendChild(card);
+    });
+</script>
+
+</body>
+</html>

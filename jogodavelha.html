@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo da Velha</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2em;
+            background-color: #eee;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="board" id="board">
+    <div class="cell" data-index="0"></div>
+    <div class="cell" data-index="1"></div>
+    <div class="cell" data-index="2"></div>
+    <div class="cell" data-index="3"></div>
+    <div class="cell" data-index="4"></div>
+    <div class="cell" data-index="5"></div>
+    <div class="cell" data-index="6"></div>
+    <div class="cell" data-index="7"></div>
+    <div class="cell" data-index="8"></div>
+</div>
+
+<script>
+    const board = document.getElementById("board");
+    const cells = Array.from(document.querySelectorAll(".cell"));
+    let currentPlayer = "X";
+    const winningCombinations = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+
+    function handleClick(event) {
+        const cell = event.target;
+        const index = cell.getAttribute("data-index");
+
+        if (cell.textContent !== "") return; // Evita sobreposição de jogadas
+
+        cell.textContent = currentPlayer;
+        if (checkWin()) {
+            alert(`Jogador ${currentPlayer} venceu!`);
+            resetBoard();
+        } else if (isDraw()) {
+            alert("Empate!");
+            resetBoard();
+        } else {
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+        }
+    }
+
+    function checkWin() {
+        return winningCombinations.some(combination => {
+            return combination.every(index => {
+                return cells[index].textContent === currentPlayer;
+            });
+        });
+    }
+
+    function isDraw() {
+        return cells.every(cell => cell.textContent !== "");
+    }
+
+    function resetBoard() {
+        cells.forEach(cell => (cell.textContent = ""));
+        currentPlayer = "X";
+    }
+
+    board.addEventListener("click", handleClick);
+</script>
+
+</body>
+</html>

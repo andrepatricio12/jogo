@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evite os Obstáculos - Mobile</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        #gameArea {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 500px;
+            background-color: #e0e0e0;
+            overflow: hidden;
+            border: 2px solid #333;
+        }
+        .player {
+            position: absolute;
+            bottom: 10px;
+            left: 135px;
+            width: 30px;
+            height: 30px;
+            background-color: #3498db;
+        }
+        .obstacle {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: #e74c3c;
+        }
+        #score {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Evite os Obstáculos</h2>
+<div id="gameArea">
+    <div class="player" id="player"></div>
+</div>
+<p id="score">Pontuação: 0</p>
+
+<script>
+    const gameArea = document.getElementById("gameArea");
+    const player = document.getElementById("player");
+    const scoreDisplay = document.getElementById("score");
+    let score = 0;
+    let gameInterval;
+    let obstacleSpeed = 2;
+    let isGameOver = false;
+    const touchAreaLeft = window.innerWidth / 2;
+
+    // Detecta toque e move o jogador
+    gameArea.addEventListener("touchstart", (event) => {
+        if (!isGameOver) {
+            const touchX = event.touches[0].clientX;
+            if (touchX < touchAreaLeft) {
+                movePlayer("left");
+            } else {
+                movePlayer("right");
+            }
+        }
+    });
+
+    function movePlayer(direction) {
+        const left = parseInt(window.getComputedStyle(player).getPropertyValue("left"));
+        if (direction === "left" && left > 0) {
+            player.style.left = left - 20 + "px";
+        } else if (direction === "right" && left < 260) {
+            player.style.left = left + 20 + "px";
+        }
+    }
+
+    // Função para criar obstáculos
+    function createObstacle() {
+        if (isGameOver) return;
+
+        const obstacle = document.createElement("div");
+        obstacle.classList.add("obstacle");
+        obstacle.style.left = Math.floor(Math.random() * 260) + "px";
+        obstacle.style.top = "0px";
+        gameArea.appendChild(obstacle);
+
+        // Movimenta o obstáculo para baixo
+        function moveObstacle() {
+            const obstacleTop = parseInt(window.getComputedStyle(obstacle).getPropertyValue("top"));
+            obstacle.style.top = obstacleTop + obstacleSpeed + "px";
+
+            // Verifica colisão com o jogador
+            const playerLeft = parseInt(window.getComputedStyle(player).getPropertyValue("left"));
+            const obstacleLeft = parseInt(obstacle.style.left);
+
+            if (
+                obstacleTop > 460 &&
+                obstacleTop < 500 &&
+                obstacleLeft > playerLeft - 30 &&
+                obstacleLeft < playerLeft + 30
+            ) {
+                endGame();
+                return;
+            }
+
+            // Remove o obstáculo se sair da tela e aumenta a pontuação
+            if (obstacleTop > 500) {
+                obstacle.remove();
+                score++;
+                scoreDisplay.textContent = "Pontuação: " + score;
+
+                // Aumenta a velocidade dos obstáculos a cada 5 pontos
+                if (score % 5 === 0) obstacleSpeed++;
+            }
+        }
+
+        // Intervalo de movimento do obstáculo
+        const obstacleInterval = setInterval(() => {
+            if (isGameOver || !document.body.contains(obstacle)) clearInterval(obstacleInterval);
+            else moveObstacle();
+        }, 20);
+    }
+
+    // Função para finalizar o jogo
+    function endGame() {
+        isGameOver = true;
+        clearInterval(gameInterval);
+        alert("Game Over! Sua pontuação final é: " + score);
+        
+        // Reinicia o jogo
+        resetGame();
+    }
+
+    // Função para reiniciar o jogo
+    function resetGame() {
+        score = 0;
+        obstacleSpeed = 2;
+        isGameOver = false;
+        scoreDisplay.textContent = "Pontuação: " + score;
+
+        // Remove obstáculos restantes
+        const obstacles = document.querySelectorAll(".obstacle");
+        obstacles.forEach(obstacle => obstacle.remove());
+
+        // Reinicia o intervalo de geração de obstáculos
+        gameInterval = setInterval(createObstacle, 1500);
+    }
+
+    // Inicia o jogo
+    gameInterval = setInterval(createObstacle, 1500);
+</script>
+
+</body>
+</html>
