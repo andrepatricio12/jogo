@@ -3,31 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jogos Aleatórios</title>
+    <title>Portal de Jogos</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        #loading {
+            font-size: 1.5em;
+        }
+    </style>
 </head>
 <body>
 
 <h1>Bem-vindo ao Portal de Jogos!</h1>
-<p>Carregando um jogo aleatório...</p>
-
-<iframe id="gameFrame" width="100%" height="500px" style="border:none;"></iframe>
+<p id="loading">Carregando um jogo aleatório...</p>
 
 <script>
-    // Lista dos jogos HTML salvos
-    const games = [
-        "cacaaotesouro.html",
-        "jogodavelha.html",
-        "obstacle.html",
-        "jogodamemoria.html"
+    // Lista de jogos
+    const jogos = [
+        'cacaaotesouro.html',
+        'jogodavelha.html',
+        'obstacle.html',
+        'jogodamemoria.html',
+        'escape_room.html' // Adicione o novo jogo aqui
     ];
 
-    // Seleciona um jogo aleatório da lista
-    const randomGame = games[Math.floor(Math.random() * games.length)];
+    // Função para carregar um jogo aleatório
+    function carregarJogoAleatorio() {
+        const jogoAleatorio = jogos[Math.floor(Math.random() * jogos.length)];
+        window.location.href = jogoAleatorio; // Redireciona para o jogo aleatório
+    }
 
-    // Carrega o jogo escolhido no iframe
-    document.getElementById("gameFrame").src = randomGame;
+    // Carregar um jogo aleatório após 2 segundos
+    setTimeout(carregarJogoAleatorio, 2000);
 </script>
 
 </body>
 </html>
-
