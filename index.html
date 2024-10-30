@@ -41,15 +41,31 @@
             color: #4682b4;
             animation: pulse 1.5s infinite;
         }
+        #game-list {
+            display: none;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        #game-list a {
+            color: #4682b4;
+            text-decoration: none;
+            margin: 5px 0;
+            display: block;
+        }
+        #game-list a:hover {
+            text-decoration: underline;
+        }
+        #toggle-list {
+            color: #4682b4;
+            cursor: pointer;
+            text-decoration: underline;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
             100% { transform: scale(1); }
-        }
-        @media (max-width: 600px) {
-            h1 { font-size: 2em; }
-            #message { font-size: 1em; }
-            .loading { font-size: 1.2em; }
         }
     </style>
 </head>
@@ -60,6 +76,18 @@
 <p class="loading">Carregando um jogo aleatório...</p>
 <p id="countdown">Aguarde... 10</p>
 
+<!-- Link para mostrar a lista de jogos -->
+<p id="toggle-list">Ou, escolha seu jogo <span>aqui</span></p>
+
+<!-- Lista de jogos para escolher -->
+<div id="game-list">
+    <a href="cacaaotesouro.html" target="_blank">Caça ao Tesouro</a>
+    <a href="jogodavelha.html" target="_blank">Jogo da Velha</a>
+    <a href="obstacle.html" target="_blank">Obstacle</a>
+    <a href="jogodamemoria.html" target="_blank">Jogo da Memória</a>
+    <a href="escape_room.html" target="_blank">Escape Room</a>
+</div>
+
 <script>
     const games = [
         "cacaaotesouro.html",
@@ -69,14 +97,35 @@
         "escape_room.html"
     ];
 
+    // Função para escolher um jogo aleatório
     function getRandomGame() {
         const randomIndex = Math.floor(Math.random() * games.length);
         return games[randomIndex];
     }
 
+    // Temporizador de contagem regressiva e redirecionamento
     window.onload = function() {
         let countdown = 10;
         const countdownElement = document.getElementById("countdown");
         
         const interval = setInterval(() => {
-            countdown--
+            countdown--;
+            countdownElement.innerText = `Aguarde... ${countdown}`;
+            if (countdown <= 0) {
+                clearInterval(interval);
+                const randomGame = getRandomGame();
+                window.open(randomGame, "_blank"); // Abre o jogo em uma nova guia
+                window.location.reload(); // Recarrega a página inicial na guia atual
+            }
+        }, 1000);
+    }
+
+    // Alterna a visibilidade da lista de jogos ao clicar no link
+    document.getElementById("toggle-list").onclick = function() {
+        const gameList = document.getElementById("game-list");
+        gameList.style.display = gameList.style.display === "none" ? "block" : "none";
+    };
+</script>
+
+</body>
+</html>
