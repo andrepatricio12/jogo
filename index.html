@@ -94,6 +94,8 @@
             if (countdown <= 0) {
                 clearInterval(interval);
                 const randomGame = getRandomGame();
+                // Altera o estado do histórico para a página inicial
+                history.replaceState(null, "", window.location.href);
                 window.location.href = randomGame; // Redireciona para o jogo aleatório
             }
         }, 1000); // Atualiza a contagem a cada segundo
