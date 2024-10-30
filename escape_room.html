@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escape Room de Enigmas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+        #gameContainer {
+            border: 2px solid #333;
+            padding: 20px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+        #hint {
+            color: gray;
+            font-size: 0.9em;
+            display: none;
+        }
+        input[type="text"] {
+            padding: 8px;
+            margin-top: 10px;
+            width: 80%;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        #feedback {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        #score {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Escape Room: Enigmas</h1>
+
+<div id="gameContainer">
+    <p id="enigmaText"><strong>Enigma:</strong> Sou leve como uma pena, mas ninguém consegue me segurar por muito tempo. O que sou?</p>
+    <p id="hint">(Dica: Pode pedir uma, mas nem sempre ela chega.)</p>
+
+    <input type="text" id="answerInput" placeholder="Digite sua resposta...">
+    <button onclick="checkAnswer()">Enviar Resposta</button>
+    <button onclick="showHint()">Pedir Dica</button>
+
+    <div id="feedback"></div>
+    <div id="score">Pontuação: 100</div>
+</div>
+
+<script>
+    // Configurações do jogo
+    const enigmas = [
+        { pergunta: "Sou leve como uma pena, mas ninguém consegue me segurar por muito tempo. O que sou?", resposta: "respiração", dica: "Algo essencial para viver." },
+        { pergunta: "Desembaralhe a palavra 'PEDRAS' para encontrar algo muito importante na natureza.", resposta: "estardes", dica: "Olhe para o céu à noite!" },
+        { pergunta: "Eu sou o número entre 8 e 10 que divide 100 exatamente em partes iguais. Que número sou?", resposta: "9", dica: "Um número ímpar." },
+        { pergunta: "Cinco pessoas estão em fila. João não está na frente, nem no fim. Maria está exatamente no meio. Quem está à direita de Maria?", resposta: "joão", dica: "Pense na ordem das posições." }
+    ];
+
+    let currentEnigma = 0;
+    let score = 100;
+
+    // Atualiza o enigma e a dica
+    function updateEnigma() {
+        document.getElementById("enigmaText").innerText = enigmas[currentEnigma].pergunta;
+        document.getElementById("hint").innerText = `(Dica: ${enigmas[currentEnigma].dica})`;
+        document.getElementById("hint").style.display = "none";
+        document.getElementById("answerInput").value = "";
+        document.getElementById("feedback").innerText = "";
+    }
+
+    // Função para mostrar a dica e reduzir pontuação
+    function showHint() {
+        document.getElementById("hint").style.display = "block";
+        score -= 10;
+        updateScore();
+    }
+
+    // Verifica a resposta do jogador
+    function checkAnswer() {
+        const userAnswer = document.getElementById("answerInput").value.toLowerCase();
+        const feedback = document.getElementById("feedback");
+
+        if (userAnswer === enigmas[currentEnigma].resposta) {
+            feedback.textContent = "Correto! Você resolveu o enigma!";
+            feedback.style.color = "green";
+            currentEnigma++;
+
+            // Verifica se há mais enigmas
+            if (currentEnigma < enigmas.length) {
+                setTimeout(() => {
+                    updateEnigma();
+                }, 1000);
+            } else {
+                feedback.textContent = "Parabéns! Você completou todos os enigmas!";
+            }
+        } else {
+            feedback.textContent = "Resposta incorreta. Tente novamente.";
+            feedback.style.color = "red";
+        }
+    }
+
+    // Atualiza a pontuação
+    function updateScore() {
+        document.getElementById("score").innerText = `Pontuação: ${score}`;
+    }
+
+    // Inicializa o primeiro enigma
+    updateEnigma();
+</script>
+
+</body>
+</html>
