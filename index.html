@@ -11,40 +11,52 @@
             align-items: center;
             justify-content: center;
             height: 100vh;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            text-align: center;
             margin: 0;
-            font-family: Arial, sans-serif;
+            padding: 20px;
         }
         h1 {
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            color: #ff6347; /* Tomate */
+            font-size: 2.5em;
+            transition: color 0.3s;
         }
-        #loading {
+        h1:hover {
+            color: #ff4500; /* Laranja Vermelho */
+        }
+        #message {
+            margin-bottom: 20px;
+            font-size: 1.2em;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .loading {
             font-size: 1.5em;
+            color: #4682b4; /* Azul Aço */
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
     </style>
 </head>
 <body>
 
-<h1>Bem-vindo ao Portal de Jogos!</h1>
-<p id="loading">Carregando um jogo aleatório...</p>
+<h1>Bem vindo ao meu portal de jogos!</h1>
+<p id="message">Aqui eu coloco uns joguinhos que estou aprendendo a programar, o jogo é atualizado a cada acesso. Divirta-se!</p>
+<p class="loading">Carregando um jogo aleatório...</p>
 
 <script>
-    // Lista de jogos
-    const jogos = [
-        'cacaaotesouro.html',
-        'jogodavelha.html',
-        'obstacle.html',
-        'jogodamemoria.html',
-        'escape_room.html' // Adicione o novo jogo aqui
-    ];
-
-    // Função para carregar um jogo aleatório
-    function carregarJogoAleatorio() {
-        const jogoAleatorio = jogos[Math.floor(Math.random() * jogos.length)];
-        window.location.href = jogoAleatorio; // Redireciona para o jogo aleatório
-    }
-
-    // Carregar um jogo aleatório após 2 segundos
-    setTimeout(carregarJogoAleatorio, 2000);
+    const games = ["cacaaotesouro.html", "jogodavelha.html", "obstacle.html", "jogodamemoria.html", "escape_room.html"];
+    const randomGame = games[Math.floor(Math.random() * games.length)];
+    window.location.href = randomGame;
 </script>
 
 </body>
