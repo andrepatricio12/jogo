@@ -22,6 +22,10 @@
             margin-bottom: 10px;
             color: #ff6347; /* Tomate */
             font-size: 2.5em;
+            transition: color 0.3s;
+        }
+        h1:hover {
+            color: #ff4500; /* Laranja Vermelho */
         }
         #message {
             margin-bottom: 20px;
@@ -30,11 +34,30 @@
             border-radius: 8px;
             padding: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 90%;
+            max-width: 90%; /* Ajusta a largura para dispositivos móveis */
         }
         .loading {
             font-size: 1.5em;
             color: #4682b4; /* Azul Aço */
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Estilos para dispositivos móveis */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em; /* Diminui o tamanho do título */
+            }
+            #message {
+                font-size: 1em; /* Diminui o tamanho da mensagem */
+            }
+            .loading {
+                font-size: 1.2em; /* Diminui o tamanho da mensagem de carregamento */
+            }
         }
     </style>
 </head>
@@ -59,12 +82,10 @@
         return games[randomIndex];
     }
 
-    // Redireciona para um jogo aleatório após 3 segundos
+    // Redireciona para um jogo aleatório
     window.onload = function() {
-        setTimeout(function() {
-            const randomGame = getRandomGame();
-            window.location.href = randomGame;
-        }, 3000); // 3 segundos de espera
+        const randomGame = getRandomGame();
+        window.location.href = randomGame;
     }
 </script>
 
