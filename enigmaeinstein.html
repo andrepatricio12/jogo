@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enigma de Einstein</title>
+    <title>Enigma para Crianças e Jovens</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -12,7 +12,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
-            background-color: #f8f9fa;
+            background-color: #f0f8ff;
             color: #333;
         }
         h1 {
@@ -35,6 +35,25 @@
             padding: 10px;
             text-align: center;
             background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .attribute-slot {
+            border: 1px dashed #ccc;
+            border-radius: 5px;
+            padding: 5px;
+            min-height: 30px;
+            cursor: pointer;
+        }
+        .attribute {
+            background-color: #4682b4;
+            color: #fff;
+            border-radius: 5px;
+            padding: 5px;
+            margin: 5px;
+            cursor: grab;
+            text-align: center;
         }
         .counter-container {
             margin-top: 20px;
@@ -80,7 +99,7 @@
 </head>
 <body>
 
-<h1>Enigma de Einstein</h1>
+<h1>Enigma de Einstein*</h1>
 <p>Organize as casas e descubra a combinação correta!</p>
 
 <button id="toggle-rules" onclick="toggleRules()">Ver Regras</button>
@@ -88,30 +107,74 @@
 <div id="rules">
     <h3>Regras para resolver o Enigma:</h3>
     <ul>
-        <li>O norueguês vive na primeira casa.</li>
-        <li>O inglês vive na casa vermelha.</li>
-        <li>O sueco tem cães como animais de estimação.</li>
-        <li>O dinamarquês bebe chá.</li>
-        <li>A casa verde fica imediatamente à esquerda da casa branca.</li>
-        <li>O dono da casa verde bebe café.</li>
-        <li>O homem que fuma Pall Mall cria pássaros.</li>
-        <li>O dono da casa amarela fuma Dunhill.</li>
-        <li>O homem que vive na casa do centro bebe leite.</li>
-        <li>O norueguês vive ao lado da casa azul.</li>
-        <li>O homem que fuma Blends vive ao lado do que tem gatos.</li>
-        <li>O homem que cria cavalos vive ao lado do que fuma Dunhill.</li>
-        <li>O homem que fuma Blue Master bebe cerveja.</li>
-        <li>O alemão fuma Prince.</li>
-        <li>O homem que fuma Blends é vizinho do que bebe água.</li>
+        <li>A casa de João é a primeira.</li>
+        <li>Luís vive na casa verde.</li>
+        <li>Carla gosta de suco de maçã.</li>
+        <li>Ana gosta de chá.</li>
+        <li>A casa azul está imediatamente à esquerda da casa branca.</li>
+        <li>O dono da casa verde gosta de suco de laranja.</li>
+        <li>O dono da casa que gosta de rock cria pássaros.</li>
+        <li>O dono da casa amarela gosta de pop.</li>
+        <li>A pessoa no meio toma leite de morango.</li>
+        <li>João vive ao lado da casa azul.</li>
+        <li>A pessoa que gosta de jazz vive ao lado de quem tem gatos.</li>
+        <li>O dono dos cavalos vive ao lado de quem gosta de pop.</li>
+        <li>A pessoa que gosta de hip hop toma suco de limão.</li>
+        <li>Luís gosta de música clássica.</li>
+        <li>A pessoa que gosta de jazz vive ao lado de quem toma suco de uva.</li>
     </ul>
 </div>
 
 <div class="game-container">
-    <div class="house">Casa 1</div>
-    <div class="house">Casa 2</div>
-    <div class="house">Casa 3</div>
-    <div class="house">Casa 4</div>
-    <div class="house">Casa 5</div>
+    <!-- Casa 1 -->
+    <div class="house">
+        <h3>Casa 1</h3>
+        <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
+        <div class="attribute-slot" data-slot="cor" ondrop="drop(event)" ondragover="allowDrop(event)">Cor</div>
+        <div class="attribute-slot" data-slot="bebida" ondrop="drop(event)" ondragover="allowDrop(event)">Bebida</div>
+        <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
+        <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
+    </div>
+
+    <!-- Casa 2 -->
+    <div class="house">
+        <h3>Casa 2</h3>
+        <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
+        <div class="attribute-slot" data-slot="cor" ondrop="drop(event)" ondragover="allowDrop(event)">Cor</div>
+        <div class="attribute-slot" data-slot="bebida" ondrop="drop(event)" ondragover="allowDrop(event)">Bebida</div>
+        <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
+        <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
+    </div>
+
+    <!-- Casa 3 -->
+    <div class="house">
+        <h3>Casa 3</h3>
+        <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
+        <div class="attribute-slot" data-slot="cor" ondrop="drop(event)" ondragover="allowDrop(event)">Cor</div>
+        <div class="attribute-slot" data-slot="bebida" ondrop="drop(event)" ondragover="allowDrop(event)">Bebida</div>
+        <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
+        <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
+    </div>
+
+    <!-- Casa 4 -->
+    <div class="house">
+        <h3>Casa 4</h3>
+        <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
+        <div class="attribute-slot" data-slot="cor" ondrop="drop(event)" ondragover="allowDrop(event)">Cor</div>
+        <div class="attribute-slot" data-slot="bebida" ondrop="drop(event)" ondragover="allowDrop(event)">Bebida</div>
+        <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
+        <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
+    </div>
+
+    <!-- Casa 5 -->
+    <div class="house">
+        <h3>Casa 5</h3>
+        <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
+        <div class="attribute-slot" data-slot="cor" ondrop="drop(event)" ondragover="allowDrop(event)">Cor</div>
+        <div class="attribute-slot" data-slot="bebida" ondrop="drop(event)" ondragover="allowDrop(event)">Bebida</div>
+        <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
+        <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
+    </div>
 </div>
 
 <div class="counter-container">
@@ -119,50 +182,53 @@
     <p id="timer">Tempo: 00:00</p>
 </div>
 
+<div class="attribute-container">
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="joao">João</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="luis">Luís</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="carla">Carla</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="ana">Ana</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="roberto">Roberto</div>
+    <!-- E demais atributos de cores, bebidas, gostos musicais e animais -->
+</div>
+
 <script>
     let moves = 0;
-    let timer;
-    let seconds = 0;
+    let startTime = new Date();
+    const movesCounter = document.getElementById('moves');
+    const timerDisplay = document.getElementById('timer');
 
-    // Iniciar o temporizador
-    function startTimer() {
-        timer = setInterval(() => {
-            seconds++;
-            document.getElementById("timer").innerText = `Tempo: ${formatTime(seconds)}`;
-        }, 1000);
+    function drag(event) {
+        event.dataTransfer.setData("text", event.target.id);
     }
 
-    function formatTime(totalSeconds) {
-        const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
-        const secs = String(totalSeconds % 60).padStart(2, '0');
-        return `${minutes}:${secs}`;
-    }
-
-    // Contador de movimentos
-    function incrementMoves() {
-        moves++;
-        document.getElementById("moves").innerText = `Movimentos: ${moves}`;
-    }
-
-    // Controla o botão de exibição das regras
-    function toggleRules() {
-        const rulesElement = document.getElementById("rules");
-        if (rulesElement.style.display === "none" || rulesElement.style.display === "") {
-            rulesElement.style.display = "block";
-        } else {
-            rulesElement.style.display = "none";
+    function drop(event) {
+        event.preventDefault();
+        let data = event.dataTransfer.getData("text");
+        if (!event.target.hasChildNodes()) {
+            event.target.appendChild(document.getElementById(data));
+            moves++;
+            movesCounter.textContent = "Movimentos: " + moves;
         }
     }
 
-    // Inicialização
-    window.onload = function() {
-        startTimer();
-    };
+    function allowDrop(event) {
+        event.preventDefault();
+    }
 
-    // Exemplo de como incrementar movimentos (pode ser aplicado a eventos de interação real do jogo)
-    document.querySelectorAll(".house").forEach(house => {
-        house.onclick = () => incrementMoves();
-    });
+    function toggleRules() {
+        const rules = document.getElementById('rules');
+        rules.style.display = rules.style.display === "none" ? "block" : "none";
+    }
+
+    function updateTimer() {
+        const now = new Date();
+        const elapsed = Math.floor((now - startTime) / 1000);
+        const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
+        const seconds = String(elapsed % 60).padStart(2, '0');
+        timerDisplay.textContent = `Tempo: ${minutes}:${seconds}`;
+    }
+
+    setInterval(updateTimer, 1000);
 </script>
 
 </body>
