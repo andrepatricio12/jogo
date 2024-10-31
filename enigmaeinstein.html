@@ -3,98 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enigma das Cinco Casas</title>
+    <title>Jogo do Enigma de Einstein</title>
     <style>
         body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 0;
-            padding: 20px;
+            background-color: #f9f9f9;
         }
-        h1, h2 {
-            text-align: center;
+        h1, h3 {
+            margin: 20px;
         }
-        .rules {
-            margin-bottom: 20px;
-            font-size: 1em;
-            text-align: left;
-            max-width: 800px;
-        }
-        .container {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .house {
-            width: 150px;
-            border: 2px dashed #ccc;
-            padding: 5px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9em;
-        }
-        .house-slot {
-            width: 100%;
-            height: 30px;
-            border: 1px solid #ccc;
+        .categories, .houses {
             display: flex;
             justify-content: center;
-            align-items: center;
-            color: #333;
-            background-color: white;
-            font-size: 0.9em;
-            margin-top: 2px;
-            transition: background-color 0.3s;
-        }
-        .categories {
-            display: flex;
-            gap: 10px;
-            margin-top: 20px;
-            justify-content: center;
+            margin: 20px;
         }
         .category {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
+            margin: 0 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .draggable {
-            width: 100px;
-            height: 30px;
-            background-color: #4CAF50;
-            color: white;
-            text-align: center;
-            line-height: 30px;
-            cursor: move;
-            font-weight: bold;
-            border-radius: 5px;
+            padding: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            border-radius: 4px;
+            background-color: #e1f5fe;
         }
-        .counter {
-            margin-top: 10px;
-            font-weight: bold;
+        .houses {
+            margin-top: 40px;
+        }
+        .house-slot {
+            width: 150px;
+            height: 100px;
+            border: 2px dashed #aaa;
+            margin: 0 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-color: lightgray; /* Cor padrão da casa */
+        }
+        .house-column {
+            width: 150px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background-color: white; /* Cor padrão da coluna */
+        }
+        #rules {
+            margin: 20px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
         }
     </style>
 </head>
 <body>
 
-<h1>Desafio Einstein: Enigma das Cinco Casas</h1>
-<h2>Monte o enigma das cinco casas com as dicas!</h2>
+<h1>Jogo do Enigma de Einstein</h1>
+<p>Arraste os itens para as casas corretas!</p>
 
-<!-- Regras do jogo -->
-<div id="rules" class="rules">
+<div id="rules">
     <h3>Regras para resolver o Enigma:</h3>
     <ul>
         <li>A casa de João é a primeira.</li>
         <li>Luís vive na casa verde.</li>
         <li>Carla gosta de suco de maçã.</li>
         <li>Ana gosta de chá.</li>
-        <li>A casa azul está imediatamente à esquerda da casa branca.</li>
+        <li>A casa azul está imediatamente à esquerda da casa cinza.</li>
         <li>O dono da casa verde gosta de suco de laranja.</li>
         <li>O dono da casa que gosta de rock cria pássaros.</li>
         <li>O dono da casa amarela gosta de pop.</li>
@@ -108,78 +93,22 @@
     </ul>
 </div>
 
-<!-- Área de Casas -->
-<div class="container">
-    <div class="house" id="house1">
-        <div class="house-slot" data-category="cor">Cor</div>
-        <div class="house-slot" data-category="nome">Nome</div>
-        <div class="house-slot" data-category="bebida">Bebida</div>
-        <div class="house-slot" data-category="animal">Animal</div>
-        <div class="house-slot" data-category="musica">Música</div>
-    </div>
-    <div class="house" id="house2">
-        <div class="house-slot" data-category="cor">Cor</div>
-        <div class="house-slot" data-category="nome">Nome</div>
-        <div class="house-slot" data-category="bebida">Bebida</div>
-        <div class="house-slot" data-category="animal">Animal</div>
-        <div class="house-slot" data-category="musica">Música</div>
-    </div>
-    <div class="house" id="house3">
-        <div class="house-slot" data-category="cor">Cor</div>
-        <div class="house-slot" data-category="nome">Nome</div>
-        <div class="house-slot" data-category="bebida">Bebida</div>
-        <div class="house-slot" data-category="animal">Animal</div>
-        <div class="house-slot" data-category="musica">Música</div>
-    </div>
-    <div class="house" id="house4">
-        <div class="house-slot" data-category="cor">Cor</div>
-        <div class="house-slot" data-category="nome">Nome</div>
-        <div class="house-slot" data-category="bebida">Bebida</div>
-        <div class="house-slot" data-category="animal">Animal</div>
-        <div class="house-slot" data-category="musica">Música</div>
-    </div>
-    <div class="house" id="house5">
-        <div class="house-slot" data-category="cor">Cor</div>
-        <div class="house-slot" data-category="nome">Nome</div>
-        <div class="house-slot" data-category="bebida">Bebida</div>
-        <div class="house-slot" data-category="animal">Animal</div>
-        <div class="house-slot" data-category="musica">Música</div>
-    </div>
-</div>
-
-<!-- Área de Categorias -->
 <div class="categories">
-    <div class="category">
-        <h3>Cores</h3>
-        <div class="draggable" draggable="true" data-category="cor" style="background-color: red;">Vermelho</div>
-        <div class="draggable" draggable="true" data-category="cor" style="background-color: blue;">Azul</div>
-        <div class="draggable" draggable="true" data-category="cor" style="background-color: green;">Verde</div>
-        <div class="draggable" draggable="true" data-category="cor" style="background-color: yellow;">Amarelo</div>
-        <div class="draggable" draggable="true" data-category="cor" style="background-color: white; color: black;">Branco</div>
-    </div>
-    <div class="category">
-        <h3>Nomes</h3>
-        <div class="draggable" draggable="true" data-category="nome">João</div>
-        <div class="draggable" draggable="true" data-category="nome">Luís</div>
-        <div class="draggable" draggable="true" data-category="nome">Carla</div>
-        <div class="draggable" draggable="true" data-category="nome">Ana</div>
-        <div class="draggable" draggable="true" data-category="nome">Mário</div>
-    </div>
-    <div class="category">
-        <h3>Bebidas</h3>
-        <div class="draggable" draggable="true" data-category="bebida">Suco de Maçã</div>
-        <div class="draggable" draggable="true" data-category="bebida">Chá</div>
-        <div class="draggable" draggable="true" data-category="bebida">Suco de Laranja</div>
-        <div class="draggable" draggable="true" data-category="bebida">Leite de Morango</div>
-        <div class="draggable" draggable="true" data-category="bebida">Suco de Limão</div>
-    </div>
     <div class="category">
         <h3>Animais</h3>
         <div class="draggable" draggable="true" data-category="animal">Cachorro</div>
         <div class="draggable" draggable="true" data-category="animal">Gato</div>
+        <div class="draggable" draggable="true" data-category="animal">Pássaro</div>
         <div class="draggable" draggable="true" data-category="animal">Cavalo</div>
         <div class="draggable" draggable="true" data-category="animal">Peixe</div>
-        <div class="draggable" draggable="true" data-category="animal">Pássaro</div>
+    </div>
+    <div class="category">
+        <h3>Frutas</h3>
+        <div class="draggable" draggable="true" data-category="fruta">Maçã</div>
+        <div class="draggable" draggable="true" data-category="fruta">Banana</div>
+        <div class="draggable" draggable="true" data-category="fruta">Laranja</div>
+        <div class="draggable" draggable="true" data-category="fruta">Uva</div>
+        <div class="draggable" draggable="true" data-category="fruta">Morango</div>
     </div>
     <div class="category">
         <h3>Músicas</h3>
@@ -191,9 +120,24 @@
     </div>
 </div>
 
+<div class="houses">
+    <div class="house-column" data-category="house1" style="background-color: lightblue;">Casa 1</div>
+    <div class="house-column" data-category="house2" style="background-color: lightgreen;">Casa 2</div>
+    <div class="house-column" data-category="house3" style="background-color: lightyellow;">Casa 3</div>
+    <div class="house-column" data-category="house4" style="background-color: lightcoral;">Casa 4</div>
+    <div class="house-column" data-category="house5" style="background-color: lightgray;">Casa 5</div>
+
+    <div class="house-slot" data-category="house1"></div>
+    <div class="house-slot" data-category="house2"></div>
+    <div class="house-slot" data-category="house3"></div>
+    <div class="house-slot" data-category="house4"></div>
+    <div class="house-slot" data-category="house5"></div>
+</div>
+
 <script>
     const draggables = document.querySelectorAll('.draggable');
     const slots = document.querySelectorAll('.house-slot');
+    const columns = document.querySelectorAll('.house-column');
 
     draggables.forEach(draggable => {
         draggable.addEventListener('dragstart', () => {
@@ -209,47 +153,55 @@
         slot.addEventListener('dragover', e => {
             e.preventDefault();
             const dragging = document.querySelector('.dragging');
-            if (dragging && dragging.dataset.category === slot.dataset.category) {
-                slot.style.backgroundColor = dragging.style.backgroundColor; // Muda a cor da coluna para a cor do item arrastado
+            const column = document.querySelector(`.house-column[data-category="${slot.dataset.category}"]`);
+
+            if (dragging) {
+                column.style.backgroundColor = dragging.style.backgroundColor; // Muda a cor da coluna para a cor do item arrastado
             }
         });
 
         slot.addEventListener('dragleave', () => {
-            slot.style.backgroundColor = 'white'; // Reseta a cor ao sair do slot
+            const column = document.querySelector(`.house-column[data-category="${slot.dataset.category}"]`);
+            column.style.backgroundColor = 'lightgray'; // Reseta a cor para cinza ao sair do slot
         });
 
         slot.addEventListener('drop', e => {
             e.preventDefault();
             const dragging = document.querySelector('.dragging');
-            if (dragging && dragging.dataset.category === slot.dataset.category) {
+            const column = document.querySelector(`.house-column[data-category="${slot.dataset.category}"]`);
+
+            if (dragging) {
                 const existingItem = slot.textContent; // Captura o item existente, se houver
                 if (existingItem) {
                     // Retorna o item existente à coluna de categorias
                     const categoryDiv = document.querySelector(`.category div[data-category="${slot.dataset.category}"]`);
-                    categoryDiv.insertAdjacentElement('afterend', createDraggableElement(existingItem, slot.style.backgroundColor));
+                    const newDraggable = createDraggableElement(existingItem);
+                    categoryDiv.insertAdjacentElement('afterend', newDraggable);
                 }
                 // Define o novo item no slot
                 slot.textContent = dragging.textContent;
-                slot.style.backgroundColor = dragging.style.backgroundColor;
+                slot.style.backgroundColor = dragging.style.backgroundColor; // Muda a cor do slot
+                column.style.backgroundColor = dragging.style.backgroundColor; // Muda a cor da coluna
                 dragging.remove();
             }
         });
     });
 
     // Função para criar um novo elemento arrastável
-    function createDraggableElement(text, bgColor) {
+    function createDraggableElement(text) {
         const newDiv = document.createElement('div');
-        newDiv.className = 'draggable';
-        newDiv.draggable = true;
-        newDiv.dataset.category = text; // Define a categoria como o texto
+        newDiv.classList.add('draggable');
+        newDiv.setAttribute('draggable', 'true');
         newDiv.textContent = text;
-        newDiv.style.backgroundColor = bgColor;
+
         newDiv.addEventListener('dragstart', () => {
             newDiv.classList.add('dragging');
         });
+
         newDiv.addEventListener('dragend', () => {
             newDiv.classList.remove('dragging');
         });
+
         return newDiv;
     }
 </script>
