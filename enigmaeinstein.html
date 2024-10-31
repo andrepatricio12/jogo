@@ -99,7 +99,7 @@
 </head>
 <body>
 
-<h1>Enigma de Einstein*</h1>
+<h1>Enigma de Crianças e Jovens</h1>
 <p>Organize as casas e descubra a combinação correta!</p>
 
 <button id="toggle-rules" onclick="toggleRules()">Ver Regras</button>
@@ -126,7 +126,7 @@
 </div>
 
 <div class="game-container">
-    <!-- Casa 1 -->
+    <!-- Casas -->
     <div class="house">
         <h3>Casa 1</h3>
         <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
@@ -135,8 +135,7 @@
         <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
         <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
     </div>
-
-    <!-- Casa 2 -->
+    <!-- Repita para as demais casas (2 a 5) -->
     <div class="house">
         <h3>Casa 2</h3>
         <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
@@ -145,8 +144,6 @@
         <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
         <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
     </div>
-
-    <!-- Casa 3 -->
     <div class="house">
         <h3>Casa 3</h3>
         <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
@@ -155,8 +152,6 @@
         <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
         <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
     </div>
-
-    <!-- Casa 4 -->
     <div class="house">
         <h3>Casa 4</h3>
         <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
@@ -165,8 +160,6 @@
         <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
         <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
     </div>
-
-    <!-- Casa 5 -->
     <div class="house">
         <h3>Casa 5</h3>
         <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
@@ -183,12 +176,34 @@
 </div>
 
 <div class="attribute-container">
+    <!-- Nomes -->
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="joao">João</div>
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="luis">Luís</div>
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="carla">Carla</div>
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="ana">Ana</div>
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="roberto">Roberto</div>
-    <!-- E demais atributos de cores, bebidas, gostos musicais e animais -->
+    <!-- Cores -->
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="amarelo">Amarelo</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="azul">Azul</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="verde">Verde</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="vermelho">Vermelho</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="branco">Branco</div>
+    <!-- Bebidas -->
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="suco-maca">Suco de Maçã</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="cha">Chá</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="leite">Leite de Morango</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="suco-laranja">Suco de Laranja</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="suco-uva">Suco de Uva</div>
+    <!-- Gostos musicais -->
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="rock">Rock</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="pop">Pop</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="jazz">Jazz</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="classica">Clássica</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="hip-hop">Hip Hop</div>
+    <!-- Animais -->
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="passaros">Pássaros</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="gatos">Gatos</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="cavalos">Cavalos</div>
 </div>
 
 <script>
