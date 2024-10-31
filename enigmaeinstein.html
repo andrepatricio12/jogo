@@ -1,367 +1,169 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enigma de Lógica</title>
+    <title>Enigma de Einstein</title>
     <style>
-        /* CSS */
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f0f0;
-            padding: 20px;
-        }
-
-        #game-board {
             display: flex;
+            flex-direction: column;
+            align-items: center;
             justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .house {
-            border: 2px solid #ccc;
-            padding: 10px;
-            width: 180px;
-            background-color: #fff;
-            border-radius: 8px;
-        }
-
-        .category button {
-            width: 100%;
-            margin: 5px 0;
-            padding: 5px;
-            font-size: 14px;
-            cursor: pointer;
-        }
-
-        #result, #stats {
-            font-weight: bold;
-            margin-top: 15px;
+            padding: 20px;
+            background-color: #f8f9fa;
             color: #333;
         }
-
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-top: 20px;
-            cursor: pointer;
-            border-radius: 5px;
-            border: none;
-            background-color: #4CAF50;
-            color: white;
-            transition: background-color 0.3s;
+        h1 {
+            color: #ff6347;
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 10px;
         }
-
-        button:hover {
-            background-color: #45a049;
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 800px;
+            margin-top: 20px;
+        }
+        .house {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            background-color: #fff;
+        }
+        .counter-container {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        #toggle-rules {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 10px 20px;
+            background-color: #4682b4;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #toggle-rules:hover {
+            background-color: #5a9bd3;
+        }
+        #rules {
+            display: none;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: left;
+            max-width: 90%;
+            overflow-y: auto;
+            height: 300px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .game-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
     </style>
 </head>
-<body onload="iniciarJogo()">
-    <h1>Enigma de Lógica</h1>
-    <p>Use as pistas para resolver o quebra-cabeça! Clique nas opções para selecionar as características corretas para cada casa.</p>
-    <div id="game-board">
-        <!-- Casas de 1 a 5 -->
-        <div class="house" data-house="1">
-            <h2>Casa 1</h2>
-            <div class="options">
-                <div class="category">
-                    <p>Cor</p>
-                    <button onclick="selectOption('color', 'Vermelha', 1)">Vermelha</button>
-                    <button onclick="selectOption('color', 'Verde', 1)">Verde</button>
-                    <button onclick="selectOption('color', 'Azul', 1)">Azul</button>
-                    <button onclick="selectOption('color', 'Amarela', 1)">Amarela</button>
-                    <button onclick="selectOption('color', 'Branca', 1)">Branca</button>
-                </div>
-                <div class="category">
-                    <p>Animal</p>
-                    <button onclick="selectOption('animal', 'Cachorro', 1)">Cachorro</button>
-                    <button onclick="selectOption('animal', 'Gato', 1)">Gato</button>
-                    <button onclick="selectOption('animal', 'Pássaro', 1)">Pássaro</button>
-                    <button onclick="selectOption('animal', 'Peixe', 1)">Peixe</button>
-                    <button onclick="selectOption('animal', 'Cavalo', 1)">Cavalo</button>
-                </div>
-                <div class="category">
-                    <p>Bebida</p>
-                    <button onclick="selectOption('drink', 'Café', 1)">Café</button>
-                    <button onclick="selectOption('drink', 'Chá', 1)">Chá</button>
-                    <button onclick="selectOption('drink', 'Água', 1)">Água</button>
-                    <button onclick="selectOption('drink', 'Suco', 1)">Suco</button>
-                    <button onclick="selectOption('drink', 'Refrigerante', 1)">Refrigerante</button>
-                </div>
-                <div class="category">
-                    <p>Carro</p>
-                    <button onclick="selectOption('car', 'Fusca', 1)">Fusca</button>
-                    <button onclick="selectOption('car', 'Civic', 1)">Civic</button>
-                    <button onclick="selectOption('car', 'Hilux', 1)">Hilux</button>
-                    <button onclick="selectOption('car', 'Porsche', 1)">Porsche</button>
-                    <button onclick="selectOption('car', 'Camaro', 1)">Camaro</button>
-                </div>
-                <div class="category">
-                    <p>Nacionalidade</p>
-                    <button onclick="selectOption('nationality', 'Brasileira', 1)">Brasileira</button>
-                    <button onclick="selectOption('nationality', 'Argentina', 1)">Argentina</button>
-                    <button onclick="selectOption('nationality', 'Chinesa', 1)">Chinesa</button>
-                    <button onclick="selectOption('nationality', 'Americana', 1)">Americana</button>
-                    <button onclick="selectOption('nationality', 'Francesa', 1)">Francesa</button>
-                </div>
-            </div>
-        </div>
+<body>
 
-        <div class="house" data-house="2">
-            <h2>Casa 2</h2>
-            <div class="options">
-                <div class="category">
-                    <p>Cor</p>
-                    <button onclick="selectOption('color', 'Vermelha', 2)">Vermelha</button>
-                    <button onclick="selectOption('color', 'Verde', 2)">Verde</button>
-                    <button onclick="selectOption('color', 'Azul', 2)">Azul</button>
-                    <button onclick="selectOption('color', 'Amarela', 2)">Amarela</button>
-                    <button onclick="selectOption('color', 'Branca', 2)">Branca</button>
-                </div>
-                <div class="category">
-                    <p>Animal</p>
-                    <button onclick="selectOption('animal', 'Cachorro', 2)">Cachorro</button>
-                    <button onclick="selectOption('animal', 'Gato', 2)">Gato</button>
-                    <button onclick="selectOption('animal', 'Pássaro', 2)">Pássaro</button>
-                    <button onclick="selectOption('animal', 'Peixe', 2)">Peixe</button>
-                    <button onclick="selectOption('animal', 'Cavalo', 2)">Cavalo</button>
-                </div>
-                <div class="category">
-                    <p>Bebida</p>
-                    <button onclick="selectOption('drink', 'Café', 2)">Café</button>
-                    <button onclick="selectOption('drink', 'Chá', 2)">Chá</button>
-                    <button onclick="selectOption('drink', 'Água', 2)">Água</button>
-                    <button onclick="selectOption('drink', 'Suco', 2)">Suco</button>
-                    <button onclick="selectOption('drink', 'Refrigerante', 2)">Refrigerante</button>
-                </div>
-                <div class="category">
-                    <p>Carro</p>
-                    <button onclick="selectOption('car', 'Fusca', 2)">Fusca</button>
-                    <button onclick="selectOption('car', 'Civic', 2)">Civic</button>
-                    <button onclick="selectOption('car', 'Hilux', 2)">Hilux</button>
-                    <button onclick="selectOption('car', 'Porsche', 2)">Porsche</button>
-                    <button onclick="selectOption('car', 'Camaro', 2)">Camaro</button>
-                </div>
-                <div class="category">
-                    <p>Nacionalidade</p>
-                    <button onclick="selectOption('nationality', 'Brasileira', 2)">Brasileira</button>
-                    <button onclick="selectOption('nationality', 'Argentina', 2)">Argentina</button>
-                    <button onclick="selectOption('nationality', 'Chinesa', 2)">Chinesa</button>
-                    <button onclick="selectOption('nationality', 'Americana', 2)">Americana</button>
-                    <button onclick="selectOption('nationality', 'Francesa', 2)">Francesa</button>
-                </div>
-            </div>
-        </div>
+<h1>Enigma de Einstein</h1>
+<p>Organize as casas e descubra a combinação correta!</p>
 
-        <div class="house" data-house="3">
-            <h2>Casa 3</h2>
-            <div class="options">
-                <div class="category">
-                    <p>Cor</p>
-                    <button onclick="selectOption('color', 'Vermelha', 3)">Vermelha</button>
-                    <button onclick="selectOption('color', 'Verde', 3)">Verde</button>
-                    <button onclick="selectOption('color', 'Azul', 3)">Azul</button>
-                    <button onclick="selectOption('color', 'Amarela', 3)">Amarela</button>
-                    <button onclick="selectOption('color', 'Branca', 3)">Branca</button>
-                </div>
-                <div class="category">
-                    <p>Animal</p>
-                    <button onclick="selectOption('animal', 'Cachorro', 3)">Cachorro</button>
-                    <button onclick="selectOption('animal', 'Gato', 3)">Gato</button>
-                    <button onclick="selectOption('animal', 'Pássaro', 3)">Pássaro</button>
-                    <button onclick="selectOption('animal', 'Peixe', 3)">Peixe</button>
-                    <button onclick="selectOption('animal', 'Cavalo', 3)">Cavalo</button>
-                </div>
-                <div class="category">
-                    <p>Bebida</p>
-                    <button onclick="selectOption('drink', 'Café', 3)">Café</button>
-                    <button onclick="selectOption('drink', 'Chá', 3)">Chá</button>
-                    <button onclick="selectOption('drink', 'Água', 3)">Água</button>
-                    <button onclick="selectOption('drink', 'Suco', 3)">Suco</button>
-                    <button onclick="selectOption('drink', 'Refrigerante', 3)">Refrigerante</button>
-                </div>
-                <div class="category">
-                    <p>Carro</p>
-                    <button onclick="selectOption('car', 'Fusca', 3)">Fusca</button>
-                    <button onclick="selectOption('car', 'Civic', 3)">Civic</button>
-                    <button onclick="selectOption('car', 'Hilux', 3)">Hilux</button>
-                    <button onclick="selectOption('car', 'Porsche', 3)">Porsche</button>
-                    <button onclick="selectOption('car', 'Camaro', 3)">Camaro</button>
-                </div>
-                <div class="category">
-                    <p>Nacionalidade</p>
-                    <button onclick="selectOption('nationality', 'Brasileira', 3)">Brasileira</button>
-                    <button onclick="selectOption('nationality', 'Argentina', 3)">Argentina</button>
-                    <button onclick="selectOption('nationality', 'Chinesa', 3)">Chinesa</button>
-                    <button onclick="selectOption('nationality', 'Americana', 3)">Americana</button>
-                    <button onclick="selectOption('nationality', 'Francesa', 3)">Francesa</button>
-                </div>
-            </div>
-        </div>
+<button id="toggle-rules" onclick="toggleRules()">Ver Regras</button>
 
-        <div class="house" data-house="4">
-            <h2>Casa 4</h2>
-            <div class="options">
-                <div class="category">
-                    <p>Cor</p>
-                    <button onclick="selectOption('color', 'Vermelha', 4)">Vermelha</button>
-                    <button onclick="selectOption('color', 'Verde', 4)">Verde</button>
-                    <button onclick="selectOption('color', 'Azul', 4)">Azul</button>
-                    <button onclick="selectOption('color', 'Amarela', 4)">Amarela</button>
-                    <button onclick="selectOption('color', 'Branca', 4)">Branca</button>
-                </div>
-                <div class="category">
-                    <p>Animal</p>
-                    <button onclick="selectOption('animal', 'Cachorro', 4)">Cachorro</button>
-                    <button onclick="selectOption('animal', 'Gato', 4)">Gato</button>
-                    <button onclick="selectOption('animal', 'Pássaro', 4)">Pássaro</button>
-                    <button onclick="selectOption('animal', 'Peixe', 4)">Peixe</button>
-                    <button onclick="selectOption('animal', 'Cavalo', 4)">Cavalo</button>
-                </div>
-                <div class="category">
-                    <p>Bebida</p>
-                    <button onclick="selectOption('drink', 'Café', 4)">Café</button>
-                    <button onclick="selectOption('drink', 'Chá', 4)">Chá</button>
-                    <button onclick="selectOption('drink', 'Água', 4)">Água</button>
-                    <button onclick="selectOption('drink', 'Suco', 4)">Suco</button>
-                    <button onclick="selectOption('drink', 'Refrigerante', 4)">Refrigerante</button>
-                </div>
-                <div class="category">
-                    <p>Carro</p>
-                    <button onclick="selectOption('car', 'Fusca', 4)">Fusca</button>
-                    <button onclick="selectOption('car', 'Civic', 4)">Civic</button>
-                    <button onclick="selectOption('car', 'Hilux', 4)">Hilux</button>
-                    <button onclick="selectOption('car', 'Porsche', 4)">Porsche</button>
-                    <button onclick="selectOption('car', 'Camaro', 4)">Camaro</button>
-                </div>
-                <div class="category">
-                    <p>Nacionalidade</p>
-                    <button onclick="selectOption('nationality', 'Brasileira', 4)">Brasileira</button>
-                    <button onclick="selectOption('nationality', 'Argentina', 4)">Argentina</button>
-                    <button onclick="selectOption('nationality', 'Chinesa', 4)">Chinesa</button>
-                    <button onclick="selectOption('nationality', 'Americana', 4)">Americana</button>
-                    <button onclick="selectOption('nationality', 'Francesa', 4)">Francesa</button>
-                </div>
-            </div>
-        </div>
+<div id="rules">
+    <h3>Regras para resolver o Enigma:</h3>
+    <ul>
+        <li>O norueguês vive na primeira casa.</li>
+        <li>O inglês vive na casa vermelha.</li>
+        <li>O sueco tem cães como animais de estimação.</li>
+        <li>O dinamarquês bebe chá.</li>
+        <li>A casa verde fica imediatamente à esquerda da casa branca.</li>
+        <li>O dono da casa verde bebe café.</li>
+        <li>O homem que fuma Pall Mall cria pássaros.</li>
+        <li>O dono da casa amarela fuma Dunhill.</li>
+        <li>O homem que vive na casa do centro bebe leite.</li>
+        <li>O norueguês vive ao lado da casa azul.</li>
+        <li>O homem que fuma Blends vive ao lado do que tem gatos.</li>
+        <li>O homem que cria cavalos vive ao lado do que fuma Dunhill.</li>
+        <li>O homem que fuma Blue Master bebe cerveja.</li>
+        <li>O alemão fuma Prince.</li>
+        <li>O homem que fuma Blends é vizinho do que bebe água.</li>
+    </ul>
+</div>
 
-        <div class="house" data-house="5">
-            <h2>Casa 5</h2>
-            <div class="options">
-                <div class="category">
-                    <p>Cor</p>
-                    <button onclick="selectOption('color', 'Vermelha', 5)">Vermelha</button>
-                    <button onclick="selectOption('color', 'Verde', 5)">Verde</button>
-                    <button onclick="selectOption('color', 'Azul', 5)">Azul</button>
-                    <button onclick="selectOption('color', 'Amarela', 5)">Amarela</button>
-                    <button onclick="selectOption('color', 'Branca', 5)">Branca</button>
-                </div>
-                <div class="category">
-                    <p>Animal</p>
-                    <button onclick="selectOption('animal', 'Cachorro', 5)">Cachorro</button>
-                    <button onclick="selectOption('animal', 'Gato', 5)">Gato</button>
-                    <button onclick="selectOption('animal', 'Pássaro', 5)">Pássaro</button>
-                    <button onclick="selectOption('animal', 'Peixe', 5)">Peixe</button>
-                    <button onclick="selectOption('animal', 'Cavalo', 5)">Cavalo</button>
-                </div>
-                <div class="category">
-                    <p>Bebida</p>
-                    <button onclick="selectOption('drink', 'Café', 5)">Café</button>
-                    <button onclick="selectOption('drink', 'Chá', 5)">Chá</button>
-                    <button onclick="selectOption('drink', 'Água', 5)">Água</button>
-                    <button onclick="selectOption('drink', 'Suco', 5)">Suco</button>
-                    <button onclick="selectOption('drink', 'Refrigerante', 5)">Refrigerante</button>
-                </div>
-                <div class="category">
-                    <p>Carro</p>
-                    <button onclick="selectOption('car', 'Fusca', 5)">Fusca</button>
-                    <button onclick="selectOption('car', 'Civic', 5)">Civic</button>
-                    <button onclick="selectOption('car', 'Hilux', 5)">Hilux</button>
-                    <button onclick="selectOption('car', 'Porsche', 5)">Porsche</button>
-                    <button onclick="selectOption('car', 'Camaro', 5)">Camaro</button>
-                </div>
-                <div class="category">
-                    <p>Nacionalidade</p>
-                    <button onclick="selectOption('nationality', 'Brasileira', 5)">Brasileira</button>
-                    <button onclick="selectOption('nationality', 'Argentina', 5)">Argentina</button>
-                    <button onclick="selectOption('nationality', 'Chinesa', 5)">Chinesa</button>
-                    <button onclick="selectOption('nationality', 'Americana', 5)">Americana</button>
-                    <button onclick="selectOption('nationality', 'Francesa', 5)">Francesa</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="game-container">
+    <div class="house">Casa 1</div>
+    <div class="house">Casa 2</div>
+    <div class="house">Casa 3</div>
+    <div class="house">Casa 4</div>
+    <div class="house">Casa 5</div>
+</div>
 
-    <div id="stats">Tempo: 0s | Movimentos: 0</div>
-    <button onclick="checkSolution()">Verificar Solução</button>
-    <div id="result"></div>
+<div class="counter-container">
+    <p id="moves">Movimentos: 0</p>
+    <p id="timer">Tempo: 00:00</p>
+</div>
 
-    <script>
-        const playerSelections = {
-            1: { color: null, animal: null, drink: null, car: null, nationality: null },
-            2: { color: null, animal: null, drink: null, car: null, nationality: null },
-            3: { color: null, animal: null, drink: null, car: null, nationality: null },
-            4: { color: null, animal: null, drink: null, car: null, nationality: null },
-            5: { color: null, animal: null, drink: null, car: null, nationality: null }
-        };
+<script>
+    let moves = 0;
+    let timer;
+    let seconds = 0;
 
-        let time = 0;
-        let moves = 0;
-        let timer;
+    // Iniciar o temporizador
+    function startTimer() {
+        timer = setInterval(() => {
+            seconds++;
+            document.getElementById("timer").innerText = `Tempo: ${formatTime(seconds)}`;
+        }, 1000);
+    }
 
-        function startTimer() {
-            timer = setInterval(() => {
-                time++;
-                document.getElementById('stats').innerText = `Tempo: ${time}s | Movimentos: ${moves}`;
-            }, 1000);
+    function formatTime(totalSeconds) {
+        const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+        const secs = String(totalSeconds % 60).padStart(2, '0');
+        return `${minutes}:${secs}`;
+    }
+
+    // Contador de movimentos
+    function incrementMoves() {
+        moves++;
+        document.getElementById("moves").innerText = `Movimentos: ${moves}`;
+    }
+
+    // Controla o botão de exibição das regras
+    function toggleRules() {
+        const rulesElement = document.getElementById("rules");
+        if (rulesElement.style.display === "none" || rulesElement.style.display === "") {
+            rulesElement.style.display = "block";
+        } else {
+            rulesElement.style.display = "none";
         }
+    }
 
-        function selectOption(category, value, house) {
-            playerSelections[house][category] = value;
-            moves++;
-            updateStats();
-            checkCompleted();
-        }
-
-        function updateStats() {
-            document.getElementById('stats').innerText = `Tempo: ${time}s | Movimentos: ${moves}`;
-        }
-
-        function checkCompleted() {
-            // Check if all houses are filled
-            const allFilled = Object.values(playerSelections).every(house => Object.values(house).every(option => option));
-            if (allFilled) {
-                clearInterval(timer);
-                document.getElementById('result').innerText = 'Parabéns! Você completou o jogo!';
-            }
-        }
-
-        function checkSolution() {
-            const correctSolution = {
-                1: { color: 'Vermelha', animal: 'Cachorro', drink: 'Café', car: 'Fusca', nationality: 'Brasileira' },
-                2: { color: 'Verde', animal: 'Gato', drink: 'Chá', car: 'Civic', nationality: 'Argentina' },
-                3: { color: 'Azul', animal: 'Pássaro', drink: 'Água', car: 'Hilux', nationality: 'Chinesa' },
-                4: { color: 'Amarela', animal: 'Peixe', drink: 'Suco', car: 'Porsche', nationality: 'Americana' },
-                5: { color: 'Branca', animal: 'Cavalo', drink: 'Refrigerante', car: 'Camaro', nationality: 'Francesa' }
-            };
-
-            let correctCount = 0;
-
-            for (let house in correctSolution) {
-                for (let category in correctSolution[house]) {
-                    if (playerSelections[house][category] === correctSolution[house][category]) {
-                        correctCount++;
-                    }
-                }
-            }
-
-            document.getElementById('result').innerText = `Você acertou ${correctCount} de ${Object.keys(correctSolution).length * Object.keys(correctSolution[1]).length} opções.`;
-        }
-
+    // Inicialização
+    window.onload = function() {
         startTimer();
-    </script>
+    };
+
+    // Exemplo de como incrementar movimentos (pode ser aplicado a eventos de interação real do jogo)
+    document.querySelectorAll(".house").forEach(house => {
+        house.onclick = () => incrementMoves();
+    });
+</script>
+
 </body>
 </html>
