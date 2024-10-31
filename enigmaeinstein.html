@@ -45,6 +45,7 @@
             padding: 5px;
             min-height: 30px;
             cursor: pointer;
+            background-color: #f9f9f9; /* Adicionando cor de fundo */
         }
         .attribute {
             background-color: #4682b4;
@@ -95,6 +96,13 @@
                 grid-template-columns: repeat(2, 1fr);
             }
         }
+        .attributes-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+            max-width: 800px;
+        }
     </style>
 </head>
 <body>
@@ -126,7 +134,7 @@
 </div>
 
 <div class="game-container">
-    <!-- Casas -->
+    <!-- Casa 1 -->
     <div class="house">
         <h3>Casa 1</h3>
         <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
@@ -135,7 +143,8 @@
         <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
         <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
     </div>
-    <!-- Repita para as demais casas (2 a 5) -->
+
+    <!-- Casa 2 -->
     <div class="house">
         <h3>Casa 2</h3>
         <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
@@ -144,6 +153,8 @@
         <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
         <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
     </div>
+
+    <!-- Casa 3 -->
     <div class="house">
         <h3>Casa 3</h3>
         <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
@@ -152,6 +163,8 @@
         <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
         <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
     </div>
+
+    <!-- Casa 4 -->
     <div class="house">
         <h3>Casa 4</h3>
         <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
@@ -160,6 +173,8 @@
         <div class="attribute-slot" data-slot="musica" ondrop="drop(event)" ondragover="allowDrop(event)">Gosto Musical</div>
         <div class="attribute-slot" data-slot="animal" ondrop="drop(event)" ondragover="allowDrop(event)">Animal</div>
     </div>
+
+    <!-- Casa 5 -->
     <div class="house">
         <h3>Casa 5</h3>
         <div class="attribute-slot" data-slot="nome" ondrop="drop(event)" ondragover="allowDrop(event)">Nome</div>
@@ -172,45 +187,38 @@
 
 <div class="counter-container">
     <p id="moves">Movimentos: 0</p>
-    <p id="timer">Tempo: 00:00</p>
+    <button onclick="checkSolution()">Verificar Solução</button>
 </div>
 
-<div class="attribute-container">
-    <!-- Nomes -->
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="joao">João</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="luis">Luís</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="carla">Carla</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="ana">Ana</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="roberto">Roberto</div>
-    <!-- Cores -->
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="amarelo">Amarelo</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="azul">Azul</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="verde">Verde</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="vermelho">Vermelho</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="branco">Branco</div>
-    <!-- Bebidas -->
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="suco-maca">Suco de Maçã</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="cha">Chá</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="leite">Leite de Morango</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="suco-laranja">Suco de Laranja</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="suco-uva">Suco de Uva</div>
-    <!-- Gostos musicais -->
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="rock">Rock</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="pop">Pop</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="jazz">Jazz</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="classica">Clássica</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="hip-hop">Hip Hop</div>
-    <!-- Animais -->
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="passaros">Pássaros</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="gatos">Gatos</div>
-    <div class="attribute" draggable="true" ondragstart="drag(event)" id="cavalos">Cavalos</div>
+<div class="attributes-container">
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="João">João</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Luís">Luís</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Ana">Ana</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Carla">Carla</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Verde">Verde</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Azul">Azul</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Amarelo">Amarelo</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Branco">Branco</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Suco de Laranja">Suco de Laranja</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Suco de Maçã">Suco de Maçã</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Chá">Chá</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Leite de Morango">Leite de Morango</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Pop">Pop</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Rock">Rock</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Jazz">Jazz</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Hip Hop">Hip Hop</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Pássaros">Pássaros</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Gatos">Gatos</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Cavalos">Cavalos</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Peixes">Peixes</div>
 </div>
 
 <script>
     let moves = 0;
-    let startTime = new Date();
-    const movesCounter = document.getElementById('moves');
-    const timerDisplay = document.getElementById('timer');
+
+    function allowDrop(event) {
+        event.preventDefault();
+    }
 
     function drag(event) {
         event.dataTransfer.setData("text", event.target.id);
@@ -218,33 +226,55 @@
 
     function drop(event) {
         event.preventDefault();
-        let data = event.dataTransfer.getData("text");
-        if (!event.target.hasChildNodes()) {
-            event.target.appendChild(document.getElementById(data));
+        const data = event.dataTransfer.getData("text");
+        const target = event.target;
+
+        if (target.classList.contains('attribute-slot')) {
+            target.innerText = document.getElementById(data).innerText;
+            document.getElementById(data).style.display = "none"; // Oculta o item arrastado
             moves++;
-            movesCounter.textContent = "Movimentos: " + moves;
+            document.getElementById('moves').innerText = "Movimentos: " + moves;
         }
     }
 
-    function allowDrop(event) {
-        event.preventDefault();
+    function checkSolution() {
+        const slots = document.querySelectorAll('.attribute-slot');
+        const correctAssignments = {
+            "Casa 1": "João",
+            "Casa 2": "Luís",
+            "Casa 3": "Ana",
+            "Casa 4": "Carla",
+            "Casa 5": "Verde",
+            "Casa 1": "Amarelo",
+            "Casa 2": "Suco de Maçã",
+            "Casa 3": "Leite de Morango",
+            "Casa 4": "Pop",
+            "Casa 5": "Rock",
+            "Casa 1": "Pássaros",
+            "Casa 2": "Gatos",
+            "Casa 3": "Cavalos",
+            "Casa 4": "Peixes",
+            "Casa 5": "Hip Hop"
+        };
+        let correct = true;
+        slots.forEach(slot => {
+            const slotName = slot.innerText;
+            const slotType = slot.getAttribute("data-slot");
+            if (slotName !== correctAssignments[slotType]) {
+                correct = false;
+            }
+        });
+        if (correct) {
+            alert("Parabéns! Você resolveu o enigma!");
+        } else {
+            alert("Ainda não está correto. Tente novamente!");
+        }
     }
 
     function toggleRules() {
         const rules = document.getElementById('rules');
-        rules.style.display = rules.style.display === "none" ? "block" : "none";
+        rules.style.display = rules.style.display === "none" || rules.style.display === "" ? "block" : "none";
     }
-
-    function updateTimer() {
-        const now = new Date();
-        const elapsed = Math.floor((now - startTime) / 1000);
-        const minutes = String(Math.floor(elapsed / 60)).padStart(2, '0');
-        const seconds = String(elapsed % 60).padStart(2, '0');
-        timerDisplay.textContent = `Tempo: ${minutes}:${seconds}`;
-    }
-
-    setInterval(updateTimer, 1000);
 </script>
-
 </body>
 </html>
