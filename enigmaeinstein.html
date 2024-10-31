@@ -14,6 +14,7 @@
 
         h1 {
             text-align: center;
+            color: #333;
         }
 
         .rules {
@@ -22,7 +23,6 @@
             background-color: #fff;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 16px;
         }
 
         .container {
@@ -40,8 +40,12 @@
             justify-content: center;
             align-items: center;
             font-size: 16px;
-            background-color: #fff; /* Cor original */
-            transition: background-color 0.3s; /* Transição suave de cor */
+            background-color: #d9d9d9; /* Mudança de branco para cinza */
+            transition: background-color 0.3s;
+        }
+
+        .slot.drag-over {
+            background-color: #b3b3b3; /* Cor quando arrasta um item */
         }
 
         .attributes-container {
@@ -59,10 +63,12 @@
             border: 1px solid #ccc;
             text-align: center;
             cursor: grab;
+            transition: background-color 0.3s;
         }
 
         .attribute:active {
             cursor: grabbing;
+            background-color: #ccc; /* Cor ao arrastar */
         }
 
         .moves {
@@ -71,25 +77,17 @@
             margin-top: 20px;
         }
 
-        /* Estilos para as cores */
-        .Verde {
-            background-color: green;
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50; /* Cor do botão */
             color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        
-        .Azul {
-            background-color: blue;
-            color: white;
-        }
-        
-        .Amarelo {
-            background-color: yellow;
-            color: black;
-        }
-        
-        .Cinza {
-            background-color: gray;
-            color: white;
+
+        button:hover {
+            background-color: #45a049; /* Cor do botão ao passar o mouse */
         }
     </style>
 </head>
@@ -98,14 +96,27 @@
 <h1>Resolva o Enigma de Einstein</h1>
 
 <div class="rules">
-    <p><strong>Regras do Enigma:</strong></p>
-    <ul>
-        <li>Existem cinco casas em diferentes cores.</li>
-        <li>Em cada casa vive uma pessoa de uma nacionalidade diferente.</li>
-        <li>Os cinco donos bebem bebidas diferentes, fumam marcas diferentes e têm diferentes animais de estimação.</li>
-        <li>Use as dicas para descobrir quem é o dono de cada casa e quais são suas preferências.</li>
-        <li>A cor da casa cinza deve ser considerada no enigma.</li>
-    </ul>
+    <button onclick="toggleRules()">Mostrar/Revelar Regras</button>
+    <div id="rules" style="display: none;">
+        <h3>Regras para resolver o Enigma:</h3>
+        <ul>
+            <li>A casa de João é a primeira.</li>
+            <li>Luís vive na casa verde.</li>
+            <li>Carla gosta de suco de maçã.</li>
+            <li>Ana gosta de chá.</li>
+            <li>A casa azul está imediatamente à esquerda da casa branca.</li>
+            <li>O dono da casa verde gosta de suco de laranja.</li>
+            <li>O dono da casa que gosta de rock cria pássaros.</li>
+            <li>O dono da casa amarela gosta de pop.</li>
+            <li>A pessoa no meio toma leite de morango.</li>
+            <li>João vive ao lado da casa azul.</li>
+            <li>A pessoa que gosta de jazz vive ao lado de quem tem gatos.</li>
+            <li>O dono dos cavalos vive ao lado de quem gosta de pop.</li>
+            <li>A pessoa que gosta de hip hop toma suco de limão.</li>
+            <li>Luís gosta de música clássica.</li>
+            <li>A pessoa que gosta de jazz vive ao lado de quem toma suco de uva.</li>
+        </ul>
+    </div>
 </div>
 
 <div class="container">
@@ -126,10 +137,10 @@
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="Luís">Luís</div>
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="Ana">Ana</div>
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="Carla">Carla</div>
-    <div class="attribute Cinza" draggable="true" ondragstart="drag(event)" id="Cinza">Cinza</div>
-    <div class="attribute Verde" draggable="true" ondragstart="drag(event)" id="Verde">Verde</div>
-    <div class="attribute Azul" draggable="true" ondragstart="drag(event)" id="Azul">Azul</div>
-    <div class="attribute Amarelo" draggable="true" ondragstart="drag(event)" id="Amarelo">Amarelo</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Verde">Verde</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Azul">Azul</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Amarelo">Amarelo</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Branco">Branco</div>
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="Suco de Laranja">Suco de Laranja</div>
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="Suco de Maçã">Suco de Maçã</div>
     <div class="attribute" draggable="true" ondragstart="drag(event)" id="Chá">Chá</div>
@@ -149,6 +160,7 @@
 
     function allowDrop(event) {
         event.preventDefault();
+        event.target.classList.add('drag-over'); // Adiciona a classe quando arrasta sobre a casa
     }
 
     function drag(event) {
@@ -161,17 +173,12 @@
         const target = event.target;
 
         if (target.classList.contains('slot')) {
-            const draggedElement = document.getElementById(data);
-
-            // Muda a cor da coluna (slot) para a cor arrastada
-            target.style.backgroundColor = draggedElement.style.backgroundColor;
-            target.innerText = draggedElement.innerText;
-
-            // Oculta o item arrastado
-            draggedElement.style.display = "none"; 
+            target.innerText = document.getElementById(data).innerText;
+            document.getElementById(data).style.display = "none"; // Oculta o item arrastado
             moves++;
             document.getElementById('moves').innerText = "Movimentos: " + moves;
         }
+        target.classList.remove('drag-over'); // Remove a classe após o drop
     }
 
     function checkSolution() {
@@ -193,9 +200,18 @@
             }
         });
         if (correct) {
-            alert("Parabéns! Você resolveu o enigma!");
+            alert("Parabéns! Você resolveu o enigma corretamente!");
         } else {
-            alert("Ainda não está correto. Tente novamente!");
+            alert("Tente novamente!");
+        }
+    }
+
+    function toggleRules() {
+        const rulesDiv = document.getElementById('rules');
+        if (rulesDiv.style.display === "none") {
+            rulesDiv.style.display = "block";
+        } else {
+            rulesDiv.style.display = "none";
         }
     }
 </script>
