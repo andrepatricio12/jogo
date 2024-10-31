@@ -151,11 +151,11 @@
 <div class="categories">
     <div class="category">
         <h3>Cores</h3>
-        <div class="draggable" draggable="true" data-category="cor">Vermelho</div>
-        <div class="draggable" draggable="true" data-category="cor">Azul</div>
-        <div class="draggable" draggable="true" data-category="cor">Verde</div>
-        <div class="draggable" draggable="true" data-category="cor">Amarelo</div>
-        <div class="draggable" draggable="true" data-category="cor">Branco</div>
+        <div class="draggable" draggable="true" data-category="cor" style="background-color: red;">Vermelho</div>
+        <div class="draggable" draggable="true" data-category="cor" style="background-color: blue;">Azul</div>
+        <div class="draggable" draggable="true" data-category="cor" style="background-color: green;">Verde</div>
+        <div class="draggable" draggable="true" data-category="cor" style="background-color: yellow;">Amarelo</div>
+        <div class="draggable" draggable="true" data-category="cor" style="background-color: white; color: black;">Branco</div>
     </div>
     <div class="category">
         <h3>Nomes</h3>
@@ -182,7 +182,7 @@
         <div class="draggable" draggable="true" data-category="animal">Pássaro</div>
     </div>
     <div class="category">
-        <h3>Estilos Musicais</h3>
+        <h3>Músicas</h3>
         <div class="draggable" draggable="true" data-category="musica">Rock</div>
         <div class="draggable" draggable="true" data-category="musica">Pop</div>
         <div class="draggable" draggable="true" data-category="musica">Jazz</div>
@@ -210,24 +210,48 @@
             e.preventDefault();
             const dragging = document.querySelector('.dragging');
             if (dragging && dragging.dataset.category === slot.dataset.category) {
-                slot.style.backgroundColor = dragging.style.backgroundColor;
+                slot.style.backgroundColor = dragging.style.backgroundColor; // Muda a cor da coluna para a cor do item arrastado
             }
         });
 
         slot.addEventListener('dragleave', () => {
-            slot.style.backgroundColor = 'white';
+            slot.style.backgroundColor = 'white'; // Reseta a cor ao sair do slot
         });
 
         slot.addEventListener('drop', e => {
             e.preventDefault();
             const dragging = document.querySelector('.dragging');
             if (dragging && dragging.dataset.category === slot.dataset.category) {
+                const existingItem = slot.textContent; // Captura o item existente, se houver
+                if (existingItem) {
+                    // Retorna o item existente à coluna de categorias
+                    const categoryDiv = document.querySelector(`.category div[data-category="${slot.dataset.category}"]`);
+                    categoryDiv.insertAdjacentElement('afterend', createDraggableElement(existingItem, slot.style.backgroundColor));
+                }
+                // Define o novo item no slot
                 slot.textContent = dragging.textContent;
                 slot.style.backgroundColor = dragging.style.backgroundColor;
                 dragging.remove();
             }
         });
     });
+
+    // Função para criar um novo elemento arrastável
+    function createDraggableElement(text, bgColor) {
+        const newDiv = document.createElement('div');
+        newDiv.className = 'draggable';
+        newDiv.draggable = true;
+        newDiv.dataset.category = text; // Define a categoria como o texto
+        newDiv.textContent = text;
+        newDiv.style.backgroundColor = bgColor;
+        newDiv.addEventListener('dragstart', () => {
+            newDiv.classList.add('dragging');
+        });
+        newDiv.addEventListener('dragend', () => {
+            newDiv.classList.remove('dragging');
+        });
+        return newDiv;
+    }
 </script>
 
 </body>
