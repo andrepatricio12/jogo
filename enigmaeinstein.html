@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enigma de Einstein</title>
+    <title>Enigma de Einstein Contemporâneo</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+        h1 {
+            margin-bottom: 10px;
         }
         .container {
             display: flex;
-            justify-content: center;
             gap: 10px;
             margin-top: 20px;
         }
@@ -51,12 +57,23 @@
 
 <!-- Regras do Jogo -->
 <div id="rules">
-    <h2>Regras:</h2>
+    <h3>Regras para resolver o Enigma:</h3>
     <ul>
-        <li id="rule1">O Nome X mora na casa de cor Y.</li>
-        <li id="rule2">O hobby A está na casa Z.</li>
-        <li id="rule3">A bebida B está na terceira casa.</li>
-        <!-- Continue listando as regras -->
+        <li id="rule1">A casa de João é a primeira.</li>
+        <li id="rule2">Luís vive na casa verde.</li>
+        <li id="rule3">Carla gosta de suco de maçã.</li>
+        <li id="rule4">Ana gosta de chá.</li>
+        <li id="rule5">A casa azul está imediatamente à esquerda da casa cinza.</li>
+        <li id="rule6">O dono da casa verde gosta de suco de laranja.</li>
+        <li id="rule7">O dono da casa que gosta de rock cria pássaros.</li>
+        <li id="rule8">O dono da casa amarela gosta de pop.</li>
+        <li id="rule9">A pessoa no meio toma leite de morango.</li>
+        <li id="rule10">João vive ao lado da casa azul.</li>
+        <li id="rule11">A pessoa que gosta de jazz vive ao lado de quem tem gatos.</li>
+        <li id="rule12">O dono dos cavalos vive ao lado de quem gosta de pop.</li>
+        <li id="rule13">A pessoa que gosta de hip hop toma suco de limão.</li>
+        <li id="rule14">Luís gosta de música clássica.</li>
+        <li id="rule15">A pessoa que gosta de jazz vive ao lado de quem toma suco de uva.</li>
     </ul>
 </div>
 
@@ -69,11 +86,11 @@
 <!-- Casas (colunas) do jogo -->
 <div class="container">
     <div class="house" id="house1" data-house="1">
-        <div class="slot" data-category="cor"></div>
         <div class="slot" data-category="nome"></div>
+        <div class="slot" data-category="cor"></div>
         <div class="slot" data-category="bebida"></div>
-        <div class="slot" data-category="hobby"></div>
-        <div class="slot" data-category="comida"></div>
+        <div class="slot" data-category="gosto_musical"></div>
+        <div class="slot" data-category="animal"></div>
     </div>
     <!-- Repita as casas até "house5" -->
 </div>
@@ -81,17 +98,39 @@
 <!-- Categorias para arrastar -->
 <div class="container">
     <div class="category">
-        <h3>Cores</h3>
-        <div class="draggable" draggable="true" data-type="cor" data-value="Azul">Azul</div>
-        <div class="draggable" draggable="true" data-type="cor" data-value="Vermelho">Vermelho</div>
-        <!-- Adicione mais cores -->
+        <h3>Nomes</h3>
+        <div class="draggable" draggable="true" data-type="nome" data-value="João">João</div>
+        <div class="draggable" draggable="true" data-type="nome" data-value="Luís">Luís</div>
+        <div class="draggable" draggable="true" data-type="nome" data-value="Carla">Carla</div>
+        <div class="draggable" draggable="true" data-type="nome" data-value="Ana">Ana</div>
     </div>
     <div class="category">
-        <h3>Nomes</h3>
-        <div class="draggable" draggable="true" data-type="nome" data-value="Ana">Ana</div>
-        <!-- Adicione mais nomes -->
+        <h3>Cores</h3>
+        <div class="draggable" draggable="true" data-type="cor" data-value="Verde">Verde</div>
+        <div class="draggable" draggable="true" data-type="cor" data-value="Azul">Azul</div>
+        <div class="draggable" draggable="true" data-type="cor" data-value="Amarelo">Amarelo</div>
+        <div class="draggable" draggable="true" data-type="cor" data-value="Cinza">Cinza</div>
     </div>
-    <!-- Repita para outras categorias: Bebidas, Hobbies, Comidas -->
+    <div class="category">
+        <h3>Bebidas</h3>
+        <div class="draggable" draggable="true" data-type="bebida" data-value="Suco de Maçã">Suco de Maçã</div>
+        <div class="draggable" draggable="true" data-type="bebida" data-value="Chá">Chá</div>
+        <div class="draggable" draggable="true" data-type="bebida" data-value="Suco de Laranja">Suco de Laranja</div>
+        <div class="draggable" draggable="true" data-type="bebida" data-value="Leite de Morango">Leite de Morango</div>
+    </div>
+    <div class="category">
+        <h3>Gostos Musicais</h3>
+        <div class="draggable" draggable="true" data-type="gosto_musical" data-value="Rock">Rock</div>
+        <div class="draggable" draggable="true" data-type="gosto_musical" data-value="Pop">Pop</div>
+        <div class="draggable" draggable="true" data-type="gosto_musical" data-value="Jazz">Jazz</div>
+        <div class="draggable" draggable="true" data-type="gosto_musical" data-value="Clássica">Clássica</div>
+    </div>
+    <div class="category">
+        <h3>Animais</h3>
+        <div class="draggable" draggable="true" data-type="animal" data-value="Pássaros">Pássaros</div>
+        <div class="draggable" draggable="true" data-type="animal" data-value="Gatos">Gatos</div>
+        <div class="draggable" draggable="true" data-type="animal" data-value="Cavalos">Cavalos</div>
+    </div>
 </div>
 
 <script>
@@ -139,20 +178,17 @@
             const draggedType = draggedElement.getAttribute("data-type");
 
             if (currentSlotType === draggedType) {
-                // Remove botão do slot anterior, se houver
                 if (this.firstChild) {
                     this.firstChild.remove();
                 }
-                // Adiciona novo botão ao slot
                 this.appendChild(draggedElement);
-                // Incrementa contador de movimentos
                 incrementMoves();
             }
         });
     });
 
-    // Inicializar o timer ao carregar o jogo
     window.onload = startTimer;
 </script>
+
 </body>
 </html>
