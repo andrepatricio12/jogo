@@ -20,13 +20,11 @@
             gap: 10px;
             margin-top: 20px;
         }
-        .house, .category {
-            border: 1px solid #000;
-            width: 150px;
-            padding: 10px;
-            background-color: white;
-        }
         .house {
+            border: 1px solid #000;
+            width: 120px;
+            padding: 10px;
+            background-color: #f9f9f9;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -37,6 +35,8 @@
             border: 1px dashed #ccc;
             width: 100%;
             text-align: center;
+            padding: 5px;
+            background-color: #fff;
         }
         .draggable {
             cursor: pointer;
@@ -45,9 +45,11 @@
             background-color: #ddd;
             border: 1px solid #aaa;
             border-radius: 4px;
+            text-align: center;
         }
         .completed-rule {
             text-decoration: line-through;
+            color: gray;
         }
     </style>
 </head>
@@ -76,118 +78,218 @@
         <li id="rule15">A pessoa que gosta de jazz vive ao lado de quem toma suco de uva.</li>
     </ul>
 </div>
+    <div id="timer">Tempo: 0 s</div>
+<div id="moves">Movimentos: 0</div>
+<button onclick="resetGame()">Reiniciar Jogo</button>
 
-<!-- Contador de tempo e movimentos -->
-<div id="counters">
-    <p>Tempo: <span id="time">00:00</span></p>
-    <p>Movimentos: <span id="moves">0</span></p>
+
+<!-- Casas com Slots para Categorias -->
+<h2>Casas</h2>
+<div class="container">
+    <!-- Casas numeradas de 1 a 5 -->
+    <div class="house" id="house1">
+        <div class="slot" data-category="cor">Cor</div>
+        <div class="slot" data-category="nome">Nome</div>
+        <div class="slot" data-category="bebida">Bebida</div>
+        <div class="slot" data-category="gosto_musical">Gosto Musical</div>
+        <div class="slot" data-category="animal">Animal</div>
+    </div>
+    <div class="house" id="house2">
+        <div class="slot" data-category="cor">Cor</div>
+        <div class="slot" data-category="nome">Nome</div>
+        <div class="slot" data-category="bebida">Bebida</div>
+        <div class="slot" data-category="gosto_musical">Gosto Musical</div>
+        <div class="slot" data-category="animal">Animal</div>
+    </div>
+    <div class="house" id="house3">
+        <div class="slot" data-category="cor">Cor</div>
+        <div class="slot" data-category="nome">Nome</div>
+        <div class="slot" data-category="bebida">Bebida</div>
+        <div class="slot" data-category="gosto_musical">Gosto Musical</div>
+        <div class="slot" data-category="animal">Animal</div>
+    </div>
+    <div class="house" id="house4">
+        <div class="slot" data-category="cor">Cor</div>
+        <div class="slot" data-category="nome">Nome</div>
+        <div class="slot" data-category="bebida">Bebida</div>
+        <div class="slot" data-category="gosto_musical">Gosto Musical</div>
+        <div class="slot" data-category="animal">Animal</div>
+    </div>
+    <div class="house" id="house5">
+        <div class="slot" data-category="cor">Cor</div>
+        <div class="slot" data-category="nome">Nome</div>
+        <div class="slot" data-category="bebida">Bebida</div>
+        <div class="slot" data-category="gosto_musical">Gosto Musical</div>
+        <div class="slot" data-category="animal">Animal</div>
+    </div>
 </div>
 
-<!-- Casas (colunas) do jogo -->
+<!-- Botões Arrastáveis para as Categorias -->
+<h2>Opções</h2>
 <div class="container">
-    <div class="house" id="house1" data-house="1">
-        <div class="slot" data-category="nome"></div>
-        <div class="slot" data-category="cor"></div>
-        <div class="slot" data-category="bebida"></div>
-        <div class="slot" data-category="gosto_musical"></div>
-        <div class="slot" data-category="animal"></div>
-    </div>
-    <!-- Repita as casas até "house5" -->
-</div>
-
-<!-- Categorias para arrastar -->
-<div class="container">
-    <div class="category">
-        <h3>Nomes</h3>
-        <div class="draggable" draggable="true" data-type="nome" data-value="João">João</div>
-        <div class="draggable" draggable="true" data-type="nome" data-value="Luís">Luís</div>
-        <div class="draggable" draggable="true" data-type="nome" data-value="Carla">Carla</div>
-        <div class="draggable" draggable="true" data-type="nome" data-value="Ana">Ana</div>
-    </div>
+    <!-- Coluna de Cores -->
     <div class="category">
         <h3>Cores</h3>
-        <div class="draggable" draggable="true" data-type="cor" data-value="Verde">Verde</div>
-        <div class="draggable" draggable="true" data-type="cor" data-value="Azul">Azul</div>
-        <div class="draggable" draggable="true" data-type="cor" data-value="Amarelo">Amarelo</div>
-        <div class="draggable" draggable="true" data-type="cor" data-value="Cinza">Cinza</div>
+        <div class="draggable" draggable="true" data-category="cor">Verde</div>
+        <div class="draggable" draggable="true" data-category="cor">Azul</div>
+        <div class="draggable" draggable="true" data-category="cor">Amarelo</div>
+        <div class="draggable" draggable="true" data-category="cor">Cinza</div>
+        <div class="draggable" draggable="true" data-category="cor">Vermelho</div>
     </div>
+    <!-- Coluna de Nomes -->
+    <div class="category">
+        <h3>Nomes</h3>
+        <div class="draggable" draggable="true" data-category="nome">João</div>
+        <div class="draggable" draggable="true" data-category="nome">Luís</div>
+        <div class="draggable" draggable="true" data-category="nome">Carla</div>
+        <div class="draggable" draggable="true" data-category="nome">Ana</div>
+        <div class="draggable" draggable="true" data-category="nome">Pedro</div>
+    </div>
+    <!-- Coluna de Bebidas -->
     <div class="category">
         <h3>Bebidas</h3>
-        <div class="draggable" draggable="true" data-type="bebida" data-value="Suco de Maçã">Suco de Maçã</div>
-        <div class="draggable" draggable="true" data-type="bebida" data-value="Chá">Chá</div>
-        <div class="draggable" draggable="true" data-type="bebida" data-value="Suco de Laranja">Suco de Laranja</div>
-        <div class="draggable" draggable="true" data-type="bebida" data-value="Leite de Morango">Leite de Morango</div>
+        <div class="draggable" draggable="true" data-category="bebida">Suco de Maçã</div>
+        <div class="draggable" draggable="true" data-category="bebida">Chá</div>
+        <div class="draggable" draggable="true" data-category="bebida">Suco de Laranja</div>
+        <div class="draggable" draggable="true" data-category="bebida">Leite de Morango</div>
+        <div class="draggable" draggable="true" data-category="bebida">Suco de Uva</div>
     </div>
+    <!-- Coluna de Gostos Musicais -->
     <div class="category">
         <h3>Gostos Musicais</h3>
-        <div class="draggable" draggable="true" data-type="gosto_musical" data-value="Rock">Rock</div>
-        <div class="draggable" draggable="true" data-type="gosto_musical" data-value="Pop">Pop</div>
-        <div class="draggable" draggable="true" data-type="gosto_musical" data-value="Jazz">Jazz</div>
-        <div class="draggable" draggable="true" data-type="gosto_musical" data-value="Clássica">Clássica</div>
+        <div class="draggable" draggable="true" data-category="gosto_musical">Rock</div>
+        <div class="draggable" draggable="true" data-category="gosto_musical">Pop</div>
+        <div class="draggable" draggable="true" data-category="gosto_musical">Jazz</div>
+        <div class="draggable" draggable="true" data-category="gosto_musical">Clássica</div>
+        <div class="draggable" draggable="true" data-category="gosto_musical">Hip Hop</div>
     </div>
+    <!-- Coluna de Animais de Estimação -->
     <div class="category">
         <h3>Animais</h3>
-        <div class="draggable" draggable="true" data-type="animal" data-value="Pássaros">Pássaros</div>
-        <div class="draggable" draggable="true" data-type="animal" data-value="Gatos">Gatos</div>
-        <div class="draggable" draggable="true" data-type="animal" data-value="Cavalos">Cavalos</div>
+        <div class="draggable" draggable="true" data-category="animal">Pássaros</div>
+        <div class="draggable" draggable="true" data-category="animal">Gatos</div>
+        <div class="draggable" draggable="true" data-category="animal">Cavalos</div>
+        <div class="draggable" draggable="true" data-category="animal">Cães</div>
+        <div class="draggable" draggable="true" data-category="animal">Peixes</div>
     </div>
 </div>
 
 <script>
-    let moves = 0;
-    let timer;
-    let seconds = 0;
-    let minutes = 0;
+// Variáveis globais para o contador de tempo e de movimentos
+let timer = 0;
+let moves = 0;
+let interval;
 
-    function startTimer() {
-        timer = setInterval(() => {
-            seconds++;
-            if (seconds === 60) {
-                minutes++;
-                seconds = 0;
-            }
-            document.getElementById('time').textContent = 
-                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+// Inicia o cronômetro quando o jogador faz o primeiro movimento
+function startTimer() {
+    if (!interval) {
+        interval = setInterval(() => {
+            timer++;
+            document.getElementById('timer').innerText = `Tempo: ${timer} s`;
         }, 1000);
     }
+}
 
-    function incrementMoves() {
-        moves++;
-        document.getElementById('moves').textContent = moves;
+// Atualiza o contador de movimentos
+function updateMoves() {
+    moves++;
+    document.getElementById('moves').innerText = `Movimentos: ${moves}`;
+}
+
+// Funções de arrastar e soltar
+document.querySelectorAll('.draggable').forEach(item => {
+    item.addEventListener('dragstart', dragStart);
+});
+
+document.querySelectorAll('.slot').forEach(slot => {
+    slot.addEventListener('dragover', dragOver);
+    slot.addEventListener('drop', drop);
+});
+
+function dragStart(event) {
+    event.dataTransfer.setData('text', event.target.innerText);
+    event.dataTransfer.setData('category', event.target.getAttribute('data-category'));
+    startTimer();
+}
+
+function dragOver(event) {
+    event.preventDefault();
+}
+
+function drop(event) {
+    event.preventDefault();
+    const data = event.dataTransfer.getData('text');
+    const category = event.dataTransfer.getData('category');
+    const slotCategory = event.target.getAttribute('data-category');
+
+    // Verifica se a categoria corresponde ao slot
+    if (slotCategory === category) {
+        event.target.innerText = data;
+        updateMoves();
+
+        // Se for uma cor, altera a cor da casa
+        if (category === 'cor') {
+            event.target.parentNode.style.backgroundColor = data.toLowerCase();
+        }
+
+        checkRules(); // Verifica as regras sempre que um item é colocado
     }
+}
 
-    document.addEventListener('dragstart', function(e) {
-        e.dataTransfer.setData("text", e.target.id);
-        e.target.classList.add("dragging");
+// Verificação das regras e riscar as completadas
+function checkRules() {
+    // Obtenha o estado atual das casas e verifique cada regra
+    const houses = document.querySelectorAll('.house');
+    const state = Array.from(houses).map(house => ({
+        cor: house.querySelector('[data-category="cor"]').innerText,
+        nome: house.querySelector('[data-category="nome"]').innerText,
+        bebida: house.querySelector('[data-category="bebida"]').innerText,
+        gosto_musical: house.querySelector('[data-category="gosto_musical"]').innerText,
+        animal: house.querySelector('[data-category="animal"]').innerText
+    }));
+
+    // Regras do enigma de Einstein (simplificado para exemplo)
+    const rules = [
+        { id: 'rule1', condition: () => state[0].nome === 'João' },
+        { id: 'rule2', condition: () => state.some(h => h.cor === 'Verde' && h.nome === 'Luís') },
+        { id: 'rule3', condition: () => state.some(h => h.nome === 'Carla' && h.bebida === 'Suco de Maçã') },
+        // Adicione outras condições de acordo com suas regras...
+    ];
+
+    // Aplica as condições e risca as regras que foram completadas
+    rules.forEach(rule => {
+        const ruleElement = document.getElementById(rule.id);
+        if (rule.condition()) {
+            ruleElement.classList.add('completed-rule');
+        } else {
+            ruleElement.classList.remove('completed-rule');
+        }
     });
+}
 
-    document.addEventListener('dragend', function(e) {
-        e.target.classList.remove("dragging");
-    });
+// Função para zerar o jogo (opcional)
+function resetGame() {
+    clearInterval(interval);
+    interval = null;
+    timer = 0;
+    moves = 0;
+    document.getElementById('timer').innerText = 'Tempo: 0 s';
+    document.getElementById('moves').innerText = 'Movimentos: 0';
 
+    // Limpa os slots e reseta as cores das casas
     document.querySelectorAll('.slot').forEach(slot => {
-        slot.addEventListener('dragover', function(e) {
-            e.preventDefault();
-        });
-
-        slot.addEventListener('drop', function(e) {
-            e.preventDefault();
-            const draggedId = e.dataTransfer.getData("text");
-            const draggedElement = document.getElementById(draggedId);
-            const currentSlotType = this.getAttribute("data-category");
-            const draggedType = draggedElement.getAttribute("data-type");
-
-            if (currentSlotType === draggedType) {
-                if (this.firstChild) {
-                    this.firstChild.remove();
-                }
-                this.appendChild(draggedElement);
-                incrementMoves();
-            }
-        });
+        slot.innerText = '';
+    });
+    document.querySelectorAll('.house').forEach(house => {
+        house.style.backgroundColor = '#f9f9f9';
     });
 
-    window.onload = startTimer;
+    // Remove o riscado das regras
+    document.querySelectorAll('#rules li').forEach(rule => {
+        rule.classList.remove('completed-rule');
+    });
+}
+
 </script>
 
 </body>
