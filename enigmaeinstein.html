@@ -290,6 +290,46 @@ function resetGame() {
     });
 }
 
+            ...
+        rules.forEach(rule => {
+            const ruleElement = document.getElementById(rule.id);
+            if (rule.condition()) {
+                ruleElement.classList.add('completed-rule');
+            } else {
+                ruleElement.classList.remove('completed-rule');
+            }
+        });
+    }
+
+    // Função para reiniciar o jogo
+    function resetGame() {
+        // Zera o timer e o contador de movimentos
+        clearInterval(interval);
+        timer = 0;
+        moves = 0;
+        interval = null;
+        document.getElementById('timer').innerText = `Tempo: 0 s`;
+        document.getElementById('moves').innerText = `Movimentos: 0`;
+
+        // Limpa todos os slots e restaura as cores das casas
+        document.querySelectorAll('.slot').forEach(slot => {
+            slot.innerText = slot.getAttribute('data-category');
+        });
+        document.querySelectorAll('.house').forEach(house => {
+            house.style.backgroundColor = '#f9f9f9';
+        });
+
+        // Desmarca todas as regras
+        document.querySelectorAll('#rules li').forEach(rule => {
+            rule.classList.remove('completed-rule');
+        });
+    }
+</script>
+
+</body>
+</html>
+
+
 </script>
 
 </body>
