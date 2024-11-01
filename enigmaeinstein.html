@@ -189,6 +189,15 @@ function startTimer() {
         }, 1000);
     }
 }
+    @media (max-width: 600px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .house, .category {
+        width: 90%;
+    }
+}
 
 // Atualiza o contador de movimentos
 function updateMoves() {
@@ -323,6 +332,26 @@ function resetGame() {
         document.querySelectorAll('#rules li').forEach(rule => {
             rule.classList.remove('completed-rule');
         });
+
+        function checkVictory() {
+    if (rules.every(rule => document.getElementById(rule.id).classList.contains('completed-rule'))) {
+        clearInterval(interval); // Pausa o cronômetro
+        alert(`Parabéns! Você completou o enigma em ${timer} segundos e ${moves} movimentos.`);
+    }
+}
+        function resetGame() {
+    timer = 0;
+    moves = 0;
+    clearInterval(interval);
+    interval = null;
+    document.getElementById('timer').innerText = `Tempo: ${timer} s`;
+    document.getElementById('moves').innerText = `Movimentos: ${moves}`;
+    // Limpar todos os slots e estilos de cor das casas
+    document.querySelectorAll('.slot').forEach(slot => slot.innerText = slot.getAttribute('data-category'));
+    document.querySelectorAll('.house').forEach(house => house.style.backgroundColor = '#f9f9f9');
+    document.querySelectorAll('.completed-rule').forEach(rule => rule.classList.remove('completed-rule'));
+}
+
     }
 </script>
 
