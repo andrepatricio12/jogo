@@ -3,157 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drag and Drop Game</title>
+    <title>Enigma de Einstein</title>
     <style>
         body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
         }
-        .categories, .houses {
-            display: flex;
-            justify-content: center;
-            margin: 20px;
+
+        h1 {
+            text-align: center;
         }
-        .category {
-            margin: 0 20px;
-        }
-        .draggable {
+
+        .rules {
+            margin-bottom: 20px;
             padding: 10px;
-            margin: 5px;
+            background-color: #fff;
             border: 1px solid #ccc;
-            cursor: pointer;
-            border-radius: 4px;
+            border-radius: 5px;
         }
-        .houses {
-            margin-top: 40px;
-        }
-        .house-slot {
-            width: 150px;
-            height: 100px;
-            border: 2px dashed #aaa;
-            margin: 0 10px;
+
+        .container {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
+            justify-content: space-around;
+            flex-wrap: wrap;
         }
-        .house-column {
-            width: 150px;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            background-color: white; /* Cor padrão da coluna */
+
+        .slot {
+            width: 120px;
+            height: 80px;
+            margin: 10px;
+            border: 2px dashed #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            background-color: #fff;
+        }
+
+        .attributes-container {
+            display: flex;
+            flex-wrap: wrap;
+            width: 400px;
+            margin: auto;
+        }
+
+        .attribute {
+            width: 100px;
+            margin: 5px;
+            padding: 10px;
+            background-color: #e7e7e7;
+            border: 1px solid #ccc;
+            text-align: center;
+            cursor: grab;
+        }
+
+        .attribute:active {
+            cursor: grabbing;
+        }
+
+        .moves {
+            text-align: center;
+            font-size: 18px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-<h1>Arraste os itens para as casas!</h1>
-<p>Arraste os itens de cada categoria para as casas correspondentes.</p>
+<h1>Resolva o Enigma de Einstein</h1>
 
-<div class="categories">
-    <div class="category">
-        <h3>Animais</h3>
-        <div class="draggable" draggable="true" data-category="animal">Cachorro</div>
-        <div class="draggable" draggable="true" data-category="animal">Gato</div>
-        <div class="draggable" draggable="true" data-category="animal">Pássaro</div>
-    </div>
-    <div class="category">
-        <h3>Frutas</h3>
-        <div class="draggable" draggable="true" data-category="fruta">Maçã</div>
-        <div class="draggable" draggable="true" data-category="fruta">Banana</div>
-        <div class="draggable" draggable="true" data-category="fruta">Laranja</div>
-    </div>
-    <div class="category">
-        <h3>Músicas</h3>
-        <div class="draggable" draggable="true" data-category="musica">Rock</div>
-        <div class="draggable" draggable="true" data-category="musica">Pop</div>
-        <div class="draggable" draggable="true" data-category="musica">Jazz</div>
+<div class="rules">
+    <button onclick="toggleRules()">Mostrar/Revelar Regras</button>
+    <div id="rules" style="display: none;">
+        <p>As regras do enigma são as seguintes:</p>
+        <ul>
+            <li>Existem cinco casas em diferentes cores.</li>
+            <li>Em cada casa vive uma pessoa de uma nacionalidade diferente.</li>
+            <li>Os cinco donos bebem bebidas diferentes, fumam marcas diferentes e têm diferentes animais de estimação.</li>
+            <li>Use as dicas para descobrir quem é o dono de cada casa e quais são suas preferências.</li>
+        </ul>
     </div>
 </div>
 
-<div class="houses">
-    <div class="house-column" data-category="animal"></div>
-    <div class="house-column" data-category="fruta"></div>
-    <div class="house-column" data-category="musica"></div>
-    <div class="house-slot" data-category="animal"></div>
-    <div class="house-slot" data-category="fruta"></div>
-    <div class="house-slot" data-category="musica"></div>
+<div class="container">
+    <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" data-slot="Casa 1">Casa 1</div>
+    <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" data-slot="Casa 2">Casa 2</div>
+    <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" data-slot="Casa 3">Casa 3</div>
+    <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" data-slot="Casa 4">Casa 4</div>
+    <div class="slot" ondrop="drop(event)" ondragover="allowDrop(event)" data-slot="Casa 5">Casa 5</div>
+</div>
+
+<div class="moves">
+    <p id="moves">Movimentos: 0</p>
+    <button onclick="checkSolution()">Verificar Solução</button>
+</div>
+
+<div class="attributes-container">
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="João">João</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Luís">Luís</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Ana">Ana</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Carla">Carla</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Verde">Verde</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Azul">Azul</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Amarelo">Amarelo</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Branco">Branco</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Suco de Laranja">Suco de Laranja</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Suco de Maçã">Suco de Maçã</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Chá">Chá</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Leite de Morango">Leite de Morango</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Pop">Pop</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Rock">Rock</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Jazz">Jazz</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Hip Hop">Hip Hop</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Pássaros">Pássaros</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Gatos">Gatos</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Cavalos">Cavalos</div>
+    <div class="attribute" draggable="true" ondragstart="drag(event)" id="Peixes">Peixes</div>
 </div>
 
 <script>
-    const draggables = document.querySelectorAll('.draggable');
-    const slots = document.querySelectorAll('.house-slot');
-    const columns = document.querySelectorAll('.house-column');
+    let moves = 0;
 
-    draggables.forEach(draggable => {
-        draggable.addEventListener('dragstart', () => {
-            draggable.classList.add('dragging');
-        });
+    function allowDrop(event) {
+        event.preventDefault();
+    }
 
-        draggable.addEventListener('dragend', () => {
-            draggable.classList.remove('dragging');
-        });
-    });
+    function drag(event) {
+        event.dataTransfer.setData("text", event.target.id);
+    }
 
-    slots.forEach(slot => {
-        slot.addEventListener('dragover', e => {
-            e.preventDefault();
-            const dragging = document.querySelector('.dragging');
-            const column = document.querySelector(`.house-column[data-category="${slot.dataset.category}"]`);
+    function drop(event) {
+        event.preventDefault();
+        const data = event.dataTransfer.getData("text");
+        const target = event.target;
 
-            if (dragging && dragging.dataset.category === slot.dataset.category) {
-                column.style.backgroundColor = dragging.style.backgroundColor; // Muda a cor da coluna para a cor do item arrastado
+        if (target.classList.contains('slot')) {
+            target.innerText = document.getElementById(data).innerText;
+            document.getElementById(data).style.display = "none"; // Oculta o item arrastado
+            moves++;
+            document.getElementById('moves').innerText = "Movimentos: " + moves;
+        }
+    }
+
+    function checkSolution() {
+        const slots = document.querySelectorAll('.slot');
+        const correctAssignments = {
+            "Casa 1": "João",
+            "Casa 2": "Luís",
+            "Casa 3": "Ana",
+            "Casa 4": "Carla",
+            "Casa 5": "Verde"
+            // Adicione as regras restantes aqui conforme necessário
+        };
+        let correct = true;
+        slots.forEach(slot => {
+            const slotName = slot.innerText;
+            const slotType = slot.getAttribute("data-slot");
+            if (slotName !== correctAssignments[slotType]) {
+                correct = false;
             }
         });
+        if (correct) {
+            alert("Parabéns! Você resolveu o enigma!");
+        } else {
+            alert("Ainda não está correto. Tente novamente!");
+        }
+    }
 
-        slot.addEventListener('dragleave', () => {
-            const column = document.querySelector(`.house-column[data-category="${slot.dataset.category}"]`);
-            column.style.backgroundColor = 'lightgray'; // Reseta a cor para cinza ao sair do slot
-        });
-
-        slot.addEventListener('drop', e => {
-            e.preventDefault();
-            const dragging = document.querySelector('.dragging');
-            const column = document.querySelector(`.house-column[data-category="${slot.dataset.category}"]`);
-
-            if (dragging && dragging.dataset.category === slot.dataset.category) {
-                const existingItem = slot.textContent; // Captura o item existente, se houver
-                if (existingItem) {
-                    // Retorna o item existente à coluna de categorias
-                    const categoryDiv = document.querySelector(`.category div[data-category="${slot.dataset.category}"]`);
-                    const newDraggable = createDraggableElement(existingItem, column.style.backgroundColor);
-                    categoryDiv.insertAdjacentElement('afterend', newDraggable);
-                }
-                // Define o novo item no slot
-                slot.textContent = dragging.textContent;
-                slot.style.backgroundColor = dragging.style.backgroundColor;
-                column.style.backgroundColor = dragging.style.backgroundColor; // Muda a cor da coluna
-                dragging.remove();
-            }
-        });
-    });
-
-    // Função para criar um novo elemento arrastável
-    function createDraggableElement(text, bgColor) {
-        const newDiv = document.createElement('div');
-        newDiv.className = 'draggable';
-        newDiv.draggable = true;
-        newDiv.dataset.category = text; // Define a categoria como o texto
-        newDiv.textContent = text;
-        newDiv.style.backgroundColor = bgColor;
-        newDiv.addEventListener('dragstart', () => {
-            newDiv.classList.add('dragging');
-        });
-        newDiv.addEventListener('dragend', () => {
-            newDiv.classList.remove('dragging');
-        });
-        return newDiv;
+    function toggleRules() {
+        const rules = document.getElementById('rules');
+        rules.style.display = rules.style.display === "none" || rules.style.display === "" ? "block" : "none";
     }
 </script>
-
 </body>
 </html>
