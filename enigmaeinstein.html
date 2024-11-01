@@ -5,34 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo do Enigma de Einstein</title>
     <style>
-        /* Estilos gerais */
         body {
             display: flex;
             flex-direction: column;
             align-items: center;
             font-family: Arial, sans-serif;
             background-color: #f9f9f9;
+            margin: 0;
         }
         h1, h3 {
-            margin: 20px;
+            margin: 10px;
         }
-        /* Categorias e casas */
         .categories, .houses {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
             margin: 20px;
+            flex-wrap: wrap;
         }
-        .category, .house-column {
+        .category {
             margin: 10px;
             padding: 10px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 150px;
-            text-align: center;
+            min-width: 150px;
         }
-        /* Elementos arrastáveis */
         .draggable {
             padding: 10px;
             margin: 5px;
@@ -41,47 +38,39 @@
             border-radius: 4px;
             background-color: #e1f5fe;
             text-align: center;
-            width: 80px;
         }
-        /* Slots das casas */
         .houses {
-            margin-top: 20px;
+            margin-top: 40px;
+        }
+        .house-slot, .house-column {
+            width: 150px;
+            height: 100px;
+            border: 2px dashed #aaa;
+            margin: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            position: relative;
+            transition: background-color 0.3s;
         }
         .house-column {
-            display: flex;
+            border: 2px solid #ddd;
             flex-direction: column;
-            align-items: center;
-            justify-content: space-around;
             padding: 10px;
-            height: 350px;
-            background-color: lightgray;
         }
-        /* Regras */
         #rules {
-            margin: 20px;
+            width: 90%;
+            max-width: 600px;
             padding: 10px;
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            max-width: 800px;
+            margin-bottom: 20px;
+            text-align: left;
         }
-        .completed {
-            text-decoration: line-through;
-            color: gray;
-        }
-        /* Responsividade */
-        @media (max-width: 768px) {
-            .categories, .houses {
-                flex-direction: column;
-                align-items: center;
-            }
-            .category, .house-column {
-                width: 80%;
-            }
-            .draggable {
-                width: 100%;
-            }
+        .occupied {
+            background-color: #c8e6c9;
         }
     </style>
 </head>
@@ -92,121 +81,92 @@
 
 <div id="rules">
     <h3>Regras para resolver o Enigma:</h3>
-    <ul id="rules-list">
-        <li data-rule="João-primeira">A casa de João é a primeira.</li>
-        <li data-rule="Luis-verde">Luís vive na casa verde.</li>
-        <li data-rule="Carla-maca">Carla gosta de suco de maçã.</li>
-        <li data-rule="Ana-cha">Ana gosta de chá.</li>
-        <li data-rule="azul-esquerda-cinza">A casa azul está imediatamente à esquerda da casa cinza.</li>
-        <li data-rule="verde-laranja">O dono da casa verde gosta de suco de laranja.</li>
-        <li data-rule="rock-passaros">O dono da casa que gosta de rock cria pássaros.</li>
-        <li data-rule="amarelo-pop">O dono da casa amarela gosta de pop.</li>
-        <li data-rule="meio-leite-morango">A pessoa no meio toma leite de morango.</li>
-        <li data-rule="João-azul">João vive ao lado da casa azul.</li>
-        <li data-rule="jazz-gatos">A pessoa que gosta de jazz vive ao lado de quem tem gatos.</li>
-        <li data-rule="cavalos-pop">O dono dos cavalos vive ao lado de quem gosta de pop.</li>
-        <li data-rule="hiphop-limao">A pessoa que gosta de hip hop toma suco de limão.</li>
-        <li data-rule="Luis-classica">Luís gosta de música clássica.</li>
-        <li data-rule="jazz-uva">A pessoa que gosta de jazz vive ao lado de quem toma suco de uva.</li>
+    <ul>
+        <li>A casa de João é a primeira.</li>
+        <li>Luís vive na casa verde.</li>
+        <li>Carla gosta de suco de maçã.</li>
+        <li>Ana gosta de chá.</li>
+        <li>A casa azul está imediatamente à esquerda da casa cinza.</li>
+        <li>O dono da casa verde gosta de suco de laranja.</li>
+        <li>O dono da casa que gosta de rock cria pássaros.</li>
+        <li>O dono da casa amarela gosta de pop.</li>
+        <li>A pessoa no meio toma leite de morango.</li>
+        <li>João vive ao lado da casa azul.</li>
+        <li>A pessoa que gosta de jazz vive ao lado de quem tem gatos.</li>
+        <li>O dono dos cavalos vive ao lado de quem gosta de pop.</li>
+        <li>A pessoa que gosta de hip hop toma suco de limão.</li>
+        <li>Luís gosta de música clássica.</li>
+        <li>A pessoa que gosta de jazz vive ao lado de quem toma suco de uva.</li>
     </ul>
 </div>
 
 <div class="categories">
-    <div class="category" id="names">
-        <h3>Nomes</h3>
-        <div class="draggable" draggable="true" data-category="name" data-value="João">João</div>
-        <div class="draggable" draggable="true" data-category="name" data-value="Luis">Luís</div>
-        <div class="draggable" draggable="true" data-category="name" data-value="Carla">Carla</div>
-        <div class="draggable" draggable="true" data-category="name" data-value="Ana">Ana</div>
-        <div class="draggable" draggable="true" data-category="name" data-value="Paulo">Paulo</div>
+    <div class="category">
+        <h3>Animais</h3>
+        <div class="draggable" draggable="true" data-category="animal">Cachorro</div>
+        <div class="draggable" draggable="true" data-category="animal">Gato</div>
+        <div class="draggable" draggable="true" data-category="animal">Pássaro</div>
+        <div class="draggable" draggable="true" data-category="animal">Cavalo</div>
+        <div class="draggable" draggable="true" data-category="animal">Peixe</div>
     </div>
-    <div class="category" id="drinks">
+    <div class="category">
         <h3>Bebidas</h3>
-        <div class="draggable" draggable="true" data-category="drink" data-value="Chá">Chá</div>
-        <div class="draggable" draggable="true" data-category="drink" data-value="Café">Café</div>
-        <div class="draggable" draggable="true" data-category="drink" data-value="Suco de maçã">Suco de maçã</div>
-        <div class="draggable" draggable="true" data-category="drink" data-value="Leite de morango">Leite de morango</div>
-        <div class="draggable" draggable="true" data-category="drink" data-value="Suco de laranja">Suco de laranja</div>
+        <div class="draggable" draggable="true" data-category="bebida">Suco de maçã</div>
+        <div class="draggable" draggable="true" data-category="bebida">Chá</div>
+        <div class="draggable" draggable="true" data-category="bebida">Suco de laranja</div>
+        <div class="draggable" draggable="true" data-category="bebida">Suco de uva</div>
+        <div class="draggable" draggable="true" data-category="bebida">Leite de morango</div>
+    </div>
+    <div class="category">
+        <h3>Músicas</h3>
+        <div class="draggable" draggable="true" data-category="musica">Rock</div>
+        <div class="draggable" draggable="true" data-category="musica">Pop</div>
+        <div class="draggable" draggable="true" data-category="musica">Jazz</div>
+        <div class="draggable" draggable="true" data-category="musica">Hip Hop</div>
+        <div class="draggable" draggable="true" data-category="musica">Clássica</div>
     </div>
 </div>
 
 <div class="houses">
-    <div class="house-column" data-house="1">
-        <h4>Casa 1</h4>
-        <div class="slot" data-slot="name" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        <div class="slot" data-slot="drink" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-    </div>
-    <div class="house-column" data-house="2">
-        <h4>Casa 2</h4>
-        <div class="slot" data-slot="name" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        <div class="slot" data-slot="drink" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-    </div>
-    <div class="house-column" data-house="3">
-        <h4>Casa 3</h4>
-        <div class="slot" data-slot="name" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        <div class="slot" data-slot="drink" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-    </div>
-    <div class="house-column" data-house="4">
-        <h4>Casa 4</h4>
-        <div class="slot" data-slot="name" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        <div class="slot" data-slot="drink" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-    </div>
-    <div class="house-column" data-house="5">
-        <h4>Casa 5</h4>
-        <div class="slot" data-slot="name" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-        <div class="slot" data-slot="drink" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
-    </div>
+    <div class="house-column" data-house="house1">Casa 1</div>
+    <div class="house-column" data-house="house2">Casa 2</div>
+    <div class="house-column" data-house="house3">Casa 3</div>
+    <div class="house-column" data-house="house4">Casa 4</div>
+    <div class="house-column" data-house="house5">Casa 5</div>
 </div>
 
 <script>
-    function allowDrop(event) {
-        event.preventDefault();
-    }
+    const draggables = document.querySelectorAll('.draggable');
+    const houseColumns = document.querySelectorAll('.house-column');
 
-    function drop(event) {
-        event.preventDefault();
-        const draggedElement = document.querySelector('.dragging');
-        const targetSlot = event.target;
-
-        // Se o slot já estiver ocupado, devolve o item ao painel original
-        if (targetSlot.hasChildNodes()) {
-            const currentChild = targetSlot.firstChild;
-            document.getElementById(currentChild.dataset.origin).appendChild(currentChild);
-        }
-
-        // Insere o novo elemento no slot e armazena o painel de origem
-        draggedElement.dataset.origin = draggedElement.parentElement.id;
-        targetSlot.appendChild(draggedElement);
-
-        // Verifica as regras após cada movimento
-        checkRules();
-    }
-
-    // Torna o elemento arrastável e ativa o evento de soltar
-    document.querySelectorAll('.draggable').forEach((item) => {
-        item.addEventListener('dragstart', (event) => {
-            event.target.classList.add('dragging');
+    draggables.forEach(draggable => {
+        draggable.addEventListener('dragstart', () => {
+            draggable.classList.add('dragging');
         });
-        item.addEventListener('dragend', (event) => {
-            event.target.classList.remove('dragging');
+
+        draggable.addEventListener('dragend', () => {
+            draggable.classList.remove('dragging');
         });
     });
 
-    function checkRules() {
-        const houses = document.querySelectorAll('.house-column');
-        houses.forEach((house, index) => {
-            const name = house.querySelector('[data-slot="name"] .draggable');
-            const drink = house.querySelector('[data-slot="drink"] .draggable');
+    houseColumns.forEach(house => {
+        house.addEventListener('dragover', e => {
+            e.preventDefault();
+        });
 
-            // Regras de exemplo, você pode adicionar as outras regras aqui
-            if (index === 0 && name && name.dataset.value === 'João') {
-                document.querySelector('[data-rule="João-primeira"]').classList.add('completed');
-            }
-            if (name && name.dataset.value === 'Luis' && drink && drink.dataset.value === 'Suco de laranja') {
-                document.querySelector('[data-rule="Luis-verde"]').classList.add('completed');
+        house.addEventListener('drop', e => {
+            e.preventDefault();
+            const draggingItem = document.querySelector('.dragging');
+
+            if (!house.querySelector('.draggable')) { // Permite apenas um item por slot
+                house.appendChild(draggingItem);
+                house.classList.add('occupied');
+            } else {
+                alert('Esse espaço já está ocupado!');
             }
         });
-    }
+    });
 </script>
+
 </body>
 </html>
