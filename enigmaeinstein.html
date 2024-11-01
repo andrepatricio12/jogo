@@ -82,7 +82,6 @@
 <div id="moves">Movimentos: 0</div>
 <button onclick="resetGame()">Reiniciar Jogo</button>
 
-
 <!-- Casas com Slots para Categorias -->
 <h2>Casas</h2>
 <div class="container">
@@ -168,43 +167,13 @@
         <h3>Animais</h3>
         <div class="draggable" draggable="true" data-category="animal">Pássaros</div>
         <div class="draggable" draggable="true" data-category="animal">Gatos</div>
-        <div class="draggable" draggable="true" data-category="animal">Cavalos</div>
-        <div class="draggable" draggable="true" data-category="animal">Cães</div>
+        <div class="draggable" draggable="true" data-category="animal">Cachorros</div>
         <div class="draggable" draggable="true" data-category="animal">Peixes</div>
+        <div class="draggable" draggable="true" data-category="animal">Cavalos</div>
     </div>
 </div>
 
 <script>
-// Variáveis globais para o contador de tempo e de movimentos
-let timer = 0;
-let moves = 0;
-let interval;
-
-// Inicia o cronômetro quando o jogador faz o primeiro movimento
-function startTimer() {
-    if (!interval) {
-        interval = setInterval(() => {
-            timer++;
-            document.getElementById('timer').innerText = `Tempo: ${timer} s`;
-        }, 1000);
-    }
-}
-    @media (max-width: 600px) {
-    .container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .house, .category {
-        width: 90%;
-    }
-}
-
-// Atualiza o contador de movimentos
-function updateMoves() {
-    moves++;
-    document.getElementById('moves').innerText = `Movimentos: ${moves}`;
-}
-
 // Funções de arrastar e soltar
 document.querySelectorAll('.draggable').forEach(item => {
     item.addEventListener('dragstart', dragStart);
@@ -218,7 +187,6 @@ document.querySelectorAll('.slot').forEach(slot => {
 function dragStart(event) {
     event.dataTransfer.setData('text', event.target.innerText);
     event.dataTransfer.setData('category', event.target.getAttribute('data-category'));
-    startTimer();
 }
 
 function dragOver(event) {
@@ -229,43 +197,40 @@ function drop(event) {
     event.preventDefault();
     const data = event.dataTransfer.getData('text');
     const category = event.dataTransfer.getData('category');
-    const slotCategory = event.target.getAttribute('data-category');
-
-    // Verifica se a categoria corresponde ao slot
-    if (slotCategory === category) {
+    if (event.target.getAttribute('data-category') === category) {
         event.target.innerText = data;
-        updateMoves();
-
-        // Se for uma cor, altera a cor da casa
         if (category === 'cor') {
             event.target.parentNode.style.backgroundColor = data.toLowerCase();
         }
-
-        checkRules(); // Verifica as regras sempre que um item é colocado
+        moves++;
+        document.getElementById('moves').innerText = `Movimentos: ${moves}`;
+        checkRules();
     }
 }
 
-// Verificação das regras e riscar as completadas
-function checkRules() {
-    // Obtenha o estado atual das casas e verifique cada regra
-    const houses = document.querySelectorAll('.house');
-    const state = Array.from(houses).map(house => ({
-        cor: house.querySelector('[data-category="cor"]').innerText,
-        nome: house.querySelector('[data-category="nome"]').innerText,
-        bebida: house.querySelector('[data-category="bebida"]').innerText,
-        gosto_musical: house.querySelector('[data-category="gosto_musical"]').innerText,
-        animal: house.querySelector('[data-category="animal"]').innerText
-    }));
+// Controle do cronômetro
+let timer = 0;
+let interval = setInterval(() => {
+    timer++;
+    document.getElementById('timer').innerText = `Tempo: ${timer} s`;
+}, 1000);
 
-    // Regras do enigma de Einstein (simplificado para exemplo)
+// Verificação de regras
+function checkRules() {
+    const houses = Array.from(document.getElementsByClassName('house')).map(house => {
+        const obj = {};
+        house.querySelectorAll('.slot').forEach(slot => {
+            obj[slot.getAttribute('data-category')] = slot.innerText;
+        });
+        return obj;
+    });
+
     const rules = [
-        { id: 'rule1', condition: () => state[0].nome === 'João' },
-        { id: 'rule2', condition: () => state.some(h => h.cor === 'Verde' && h.nome === 'Luís') },
-        { id: 'rule3', condition: () => state.some(h => h.nome === 'Carla' && h.bebida === 'Suco de Maçã') },
-        // Adicione outras condições de acordo com suas regras...
+        { id: 'rule1', condition: () => houses[0].nome === 'João' },
+        { id: 'rule2', condition: () => houses.some(h => h.cor === 'Verde' && h.nome === 'Luís') },
+        // Resto das regras, adicionar conforme necessário
     ];
 
-    // Aplica as condições e risca as regras que foram completadas
     rules.forEach(rule => {
         const ruleElement = document.getElementById(rule.id);
         if (rule.condition()) {
@@ -276,90 +241,30 @@ function checkRules() {
     });
 }
 
-// Função para zerar o jogo (opcional)
+// Função para resetar o jogo
 function resetGame() {
     clearInterval(interval);
-    interval = null;
+    interval = setInterval(() => {
+        timer++;
+        document.getElementById('timer').innerText = `Tempo: ${timer} s`;
+    }, 1000);
     timer = 0;
     moves = 0;
-    document.getElementById('timer').innerText = 'Tempo: 0 s';
-    document.getElementById('moves').innerText = 'Movimentos: 0';
+    document.getElementById('timer').innerText = `Tempo: 0 s`;
+    document.getElementById('moves').innerText = `Movimentos: 0`;
 
-    // Limpa os slots e reseta as cores das casas
     document.querySelectorAll('.slot').forEach(slot => {
-        slot.innerText = '';
+        slot.innerText = slot.getAttribute('data-category');
     });
     document.querySelectorAll('.house').forEach(house => {
         house.style.backgroundColor = '#f9f9f9';
     });
 
-    // Remove o riscado das regras
-    document.querySelectorAll('#rules li').forEach(rule => {
+    document.querySelectorAll('.completed-rule').forEach(rule => {
         rule.classList.remove('completed-rule');
     });
 }
 
-            ...
-        rules.forEach(rule => {
-            const ruleElement = document.getElementById(rule.id);
-            if (rule.condition()) {
-                ruleElement.classList.add('completed-rule');
-            } else {
-                ruleElement.classList.remove('completed-rule');
-            }
-        });
-    }
-
-    // Função para reiniciar o jogo
-    function resetGame() {
-        // Zera o timer e o contador de movimentos
-        clearInterval(interval);
-        timer = 0;
-        moves = 0;
-        interval = null;
-        document.getElementById('timer').innerText = `Tempo: 0 s`;
-        document.getElementById('moves').innerText = `Movimentos: 0`;
-
-        // Limpa todos os slots e restaura as cores das casas
-        document.querySelectorAll('.slot').forEach(slot => {
-            slot.innerText = slot.getAttribute('data-category');
-        });
-        document.querySelectorAll('.house').forEach(house => {
-            house.style.backgroundColor = '#f9f9f9';
-        });
-
-        // Desmarca todas as regras
-        document.querySelectorAll('#rules li').forEach(rule => {
-            rule.classList.remove('completed-rule');
-        });
-
-        function checkVictory() {
-    if (rules.every(rule => document.getElementById(rule.id).classList.contains('completed-rule'))) {
-        clearInterval(interval); // Pausa o cronômetro
-        alert(`Parabéns! Você completou o enigma em ${timer} segundos e ${moves} movimentos.`);
-    }
-}
-        function resetGame() {
-    timer = 0;
-    moves = 0;
-    clearInterval(interval);
-    interval = null;
-    document.getElementById('timer').innerText = `Tempo: ${timer} s`;
-    document.getElementById('moves').innerText = `Movimentos: ${moves}`;
-    // Limpar todos os slots e estilos de cor das casas
-    document.querySelectorAll('.slot').forEach(slot => slot.innerText = slot.getAttribute('data-category'));
-    document.querySelectorAll('.house').forEach(house => house.style.backgroundColor = '#f9f9f9');
-    document.querySelectorAll('.completed-rule').forEach(rule => rule.classList.remove('completed-rule'));
-}
-
-    }
 </script>
-
-</body>
-</html>
-
-
-</script>
-
 </body>
 </html>
