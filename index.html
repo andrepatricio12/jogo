@@ -1,135 +1,152 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portal de Jogos</title>
-    <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            font-family: 'Arial', sans-serif;
-            background-color: #f0f8ff;
-            color: #333;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-        h1 {
-            margin-bottom: 10px;
-            color: #ff6347;
-            font-size: 2.5em;
-            transition: color 0.3s;
-        }
-        h1:hover {
-            color: #ff4500;
-        }
-        #message {
-            margin-bottom: 20px;
-            font-size: 1.2em;
-            background-color: #fff;
-            border-radius: 8px;
-            padding: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 90%;
-        }
-        .loading {
-            font-size: 1.5em;
-            color: #4682b4;
-            animation: pulse 1.5s infinite;
-        }
-        #game-list {
-            display: none;
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
-        #game-list a {
-            color: #4682b4;
-            text-decoration: none;
-            margin: 5px 0;
-            display: block;
-        }
-        #game-list a:hover {
-            text-decoration: underline;
-        }
-        #toggle-list {
-            color: #4682b4;
-            cursor: pointer;
-            text-decoration: underline;
-            margin-top: 20px;
-            font-size: 1.2em;
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jogo da Cobrinha</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #333;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+    canvas {
+      background-color: #000;
+      border: 1px solid #fff;
+    }
+    .controls {
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .control-btn {
+      width: 60px;
+      height: 60px;
+      font-size: 24px;
+      text-align: center;
+      background-color: #555;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
-<h1>Bem vindo ao meu portal de jogos!</h1>
-<p id="message">Aqui eu coloco uns jogos que estou aprendendo a programar, o jogo é atualizado a cada acesso. Divirta-se!</p>
-<p class="loading">Carregando um jogo aleatório...</p>
-<p id="countdown">Aguarde... 10</p>
+<canvas id="gameCanvas" width="400" height="400"></canvas>
 
-<!-- Link para mostrar a lista de jogos -->
-<p id="toggle-list">Ou, escolha seu jogo <span>aqui</span></p>
-
-<!-- Lista de jogos para escolher -->
-<div id="game-list">
-    <a href="cacaaotesouro.html" target="_blank">Caça ao Tesouro</a>
-    <a href="jogodavelha.html" target="_blank">Jogo da Velha</a>
-    <a href="obstacle.html" target="_blank">Obstacle</a>
-    <a href="jogodamemoria.html" target="_blank">Jogo da Memória</a>
-    <a href="escape_room.html" target="_blank">Escape Room</a>
-    <a href="enigmaeinstein.html" target="_blank">Enígma de Einstein </a>
-     <a href="snakegame.html" target="_blank">Jogo da cobrinha </a>
+<div class="controls">
+  <button class="control-btn" onclick="setDirection('UP')">⬆️</button>
+</div>
+<div class="controls">
+  <button class="control-btn" onclick="setDirection('LEFT')">⬅️</button>
+  <button class="control-btn" onclick="setDirection('DOWN')">⬇️</button>
+  <button class="control-btn" onclick="setDirection('RIGHT')">➡️</button>
 </div>
 
 <script>
-    const games = [
-        "cacaaotesouro.html",
-        "jogodavelha.html",
-        "obstacle.html",
-        "jogodamemoria.html",
-        "escape_room.html",
-        "enigmaeinstein.html",
-        "snakegame.html",
-        // Adicionei a vírgula que faltava aqui
-    ];
+  const canvas = document.getElementById('gameCanvas');
+  const ctx = canvas.getContext('2d');
 
-    // Função para escolher um jogo aleatório
-    function getRandomGame() {
-        const randomIndex = Math.floor(Math.random() * games.length);
-        return games[randomIndex];
+  const box = 20;
+  let snake = [];
+  snake[0] = { x: 9 * box, y: 10 * box };
+  let direction;
+  let food = {
+    x: Math.floor(Math.random() * 19 + 1) * box,
+    y: Math.floor(Math.random() * 19 + 1) * box
+  };
+  let score = 0;
+
+  function setDirection(newDirection) {
+    if (newDirection === 'LEFT' && direction !== 'RIGHT') direction = 'LEFT';
+    else if (newDirection === 'UP' && direction !== 'DOWN') direction = 'UP';
+    else if (newDirection === 'RIGHT' && direction !== 'LEFT') direction = 'RIGHT';
+    else if (newDirection === 'DOWN' && direction !== 'UP') direction = 'DOWN';
+  }
+
+  // Detect keyboard arrow keys for direction control
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'ArrowLeft') setDirection('LEFT');
+    else if (event.key === 'ArrowUp') setDirection('UP');
+    else if (event.key === 'ArrowRight') setDirection('RIGHT');
+    else if (event.key === 'ArrowDown') setDirection('DOWN');
+  });
+
+  function collision(head, array) {
+    for (let i = 0; i < array.length; i++) {
+      if (head.x === array[i].x && head.y === array[i].y) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function drawGame() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < snake.length; i++) {
+      ctx.fillStyle = (i === 0) ? '#4CAF50' : '#8BC34A';
+      ctx.fillRect(snake[i].x, snake[i].y, box, box);
+      ctx.strokeStyle = '#000';
+      ctx.strokeRect(snake[i].x, snake[i].y, box, box);
     }
 
-    // Temporizador de contagem regressiva e redirecionamento
-    window.onload = function() {
-        let countdown = 10;
-        const countdownElement = document.getElementById("countdown");
-        
-        const interval = setInterval(() => {
-            countdown--;
-            countdownElement.innerText = `Aguarde... ${countdown}`;
-            if (countdown <= 0) {
-                clearInterval(interval);
-                const randomGame = getRandomGame();
-                window.open(randomGame, "_blank"); // Abre o jogo em uma nova guia
-                window.location.reload(); // Recarrega a página inicial na guia atual
-            }
-        }, 1000);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(food.x, food.y, box, box);
+
+    let snakeX = snake[0].x;
+    let snakeY = snake[0].y;
+
+    if (direction === 'LEFT') snakeX -= box;
+    if (direction === 'UP') snakeY -= box;
+    if (direction === 'RIGHT') snakeX += box;
+    if (direction === 'DOWN') snakeY += box;
+
+    if (snakeX === food.x && snakeY === food.y) {
+      score++;
+      food = {
+        x: Math.floor(Math.random() * 19 + 1) * box,
+        y: Math.floor(Math.random() * 19 + 1) * box
+      };
+    } else {
+      snake.pop();
     }
 
-    // Alterna a visibilidade da lista de jogos ao clicar no link
-    document.getElementById("toggle-list").onclick = function() {
-        const gameList = document.getElementById("game-list");
-        gameList.style.display = gameList.style.display === "none" ? "block" : "none";
-    };
+    let newHead = { x: snakeX, y: snakeY };
+
+    if (
+      snakeX < 0 ||
+      snakeY < 0 ||
+      snakeX >= canvas.width ||
+      snakeY >= canvas.height ||
+      collision(newHead, snake)
+    ) {
+      clearInterval(game);
+      alert('Game Over! Score: ' + score);
+      document.location.reload();
+    }
+
+    snake.unshift(newHead);
+
+    ctx.fillStyle = '#FFF';
+    ctx.font = '20px Arial';
+    ctx.fillText('Score: ' + score, box, box);
+  }
+
+  let game = setInterval(drawGame, 100);
 </script>
 
 </body>
